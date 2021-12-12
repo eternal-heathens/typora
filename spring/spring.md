@@ -1,185 +1,171 @@
-#      Bean的配置方式
+# Spring
 
-## 基于XML配置
+## Bean的配置方式
 
-**Bean的定义**：      在XML文件中通过<bean>元素定义。
+### 基于XML配置
 
-**Bean的名称**：      通过<bean>的id或name属性定义。
+**Bean的定义**： 在XML文件中通过元素定义。
 
-**Bean的注入**：      通过<property>子元素或通过p命名空间的动态属性。
+**Bean的名称**： 通过的id或name属性定义。
 
-**Bean生命过程方法**：通过<bean>的init-method和destory-method属性指定Bean实现类的方法名。最多只能指定一个初始化方法和一个销毁方法。
+**Bean的注入**： 通过子元素或通过p命名空间的动态属性。
 
-**Bean作用范围**：    通过<bean>的scope属性指定。
+**Bean生命过程方法**：通过的init-method和destory-method属性指定Bean实现类的方法名。最多只能指定一个初始化方法和一个销毁方法。
 
-**Bean延迟初始化**：  通过<bean>的lazy-init属性指定，默认为default，继承于<beans>的default-lazy-init设置，该值默认为false。
+**Bean作用范围**： 通过的scope属性指定。
+
+**Bean延迟初始化**： 通过的lazy-init属性指定，默认为default，继承于的default-lazy-init设置，该值默认为false。
 
 **应用场景**：
 
-​         1、Bean实现类来源于第三方类库，如 DataSoure、JdbcTemplate等，因无法在类中标注注解，所以通过XML配置方式比较好。
+​ 1、Bean实现类来源于第三方类库，如 DataSoure、JdbcTemplate等，因无法在类中标注注解，所以通过XML配置方式比较好。
 
-​         2、命名空间的配置，如aop、context等，只能采用基于XML的配置。
+​ 2、命名空间的配置，如aop、context等，只能采用基于XML的配置。
 
- 
+### 基于注解配置
 
-## 基于注解配置
+**Bean的定义**： 在Bean实现类处通过标注@Compoent或衍型类（@Repository、@Service、@Controller）定义Bean。
 
-**Bean的定义**：      在Bean实现类处通过标注@Compoent或衍型类（@Repository、@Service、@Controller）定义Bean。
+**Bean的名称**： 通过注解的value属性定义，如@Component("name")。默认名称为小写字母开头的类名（不带包名）name。
 
-**Bean的名称**：      通过注解的value属性定义，如@Component("name")。默认名称为小写字母开头的类名（不带包名）name。
-
-**Bean的注入**：      通过通过在成员变更或方法入参处标注@Autowired，按类型匹配自动注入。还可以配合使用@Qualifier按名称匹配方式注入。
+**Bean的注入**： 通过通过在成员变更或方法入参处标注@Autowired，按类型匹配自动注入。还可以配合使用@Qualifier按名称匹配方式注入。
 
 **Bean生命过程方法**：通过在目标方法上标注@PostConstruct 和@PreDestroy注解指定初始化或销毁方法，可以定义任意多个。
 
-**Bean作用范围**：    通过在类定义处标注@Scope指定，如@Scope("prototype")
+**Bean作用范围**： 通过在类定义处标注@Scope指定，如@Scope("prototype")
 
-**Bean延迟初始化**：  通过在类定义处标注@Lazy指定，如@Lazy(true)。
+**Bean延迟初始化**： 通过在类定义处标注@Lazy指定，如@Lazy(true)。
 
 **应用场景**：
 
-​         1、Bean的实现类是当前项目开发的，可以直接在Java类中使用基于注解的配置。
+​ 1、Bean的实现类是当前项目开发的，可以直接在Java类中使用基于注解的配置。
 
-​         
+​
 
- 
+### 基于Java类配置
 
-## 基于Java类配置
+**Bean的定义**： 在标注了@Configuration的Java类中，通过在类方法上标注@Bean定义一个Bean。方法必须提供Bean的实例化逻辑。
 
-**Bean的定义**：      在标注了@Configuration的Java类中，通过在类方法上标注@Bean定义一个Bean。方法必须提供Bean的实例化逻辑。
+**Bean的名称**： 通过@Bean的name属性定义，如@Bean("user")。默认名称为方法名。
 
-**Bean的名称**：      通过@Bean的name属性定义，如@Bean("user")。默认名称为方法名。
-
-**Bean的注入**：      比较灵活，可以在方法处通过@Autowired使方法入参绑定Bean，然后在方法中通过代码进行注入；还可以通过调用配置类@Bean方法进行注入。
+**Bean的注入**： 比较灵活，可以在方法处通过@Autowired使方法入参绑定Bean，然后在方法中通过代码进行注入；还可以通过调用配置类@Bean方法进行注入。
 
 > 1. 查询实现对应实现类的Bean，若只有一个则直接匹配
->
 > 2. 若是有多个则依据BeanID/Name进行匹配
 > 3. 若无，则报错，若想不报错，则需要配置require=false
 
 **Bean生命过程方法**：通过@Bean的initMethod或destoryMethod指定一个初始化或销毁方法。对于初始化方法来说，可以直接在方法内通过代码的方法灵活定义初始化逻辑。
 
-**Bean作用范围**：    通过在Bean方法定义处标注@Scope指定。
+**Bean作用范围**： 通过在Bean方法定义处标注@Scope指定。
 
-**Bean延迟初始化**：  通过在Bean方法定义处标注@Lazy指定。
+**Bean延迟初始化**： 通过在Bean方法定义处标注@Lazy指定。
 
 **应用场景**：
 
-​         1、基于JAVA类配置的优势在于可以通过代码方法控制Bean初始化的整体逻辑。如果实例化Bean的逻辑比较复杂，则比较适合基于Java类配置的方式。
+​ 1、基于JAVA类配置的优势在于可以通过代码方法控制Bean初始化的整体逻辑。如果实例化Bean的逻辑比较复杂，则比较适合基于Java类配置的方式。
 
-​        
+​
 
- 
+### 基于Groovy DSL配置
 
-## 基于Groovy DSL配置
+**Bean的定义**： 在Groovy文件中通过DSL定义Bean。
 
-**Bean的定义**：      在Groovy文件中通过DSL定义Bean。
+**Bean的名称**： 通过Groovy的DSL定义Bean的名称（Bean的类型，Bean构建函数参数）。
 
-**Bean的名称**：      通过Groovy的DSL定义Bean的名称（Bean的类型，Bean构建函数参数）。
-
-**Bean的注入**：      比较灵活，可以在方法处通过ref()方法进行注入，如：ref("logDao")。
+**Bean的注入**： 比较灵活，可以在方法处通过ref()方法进行注入，如：ref("logDao")。
 
 **Bean生命过程方法**：通过bean->bean.initMethod或bean.destoryMethod指定一个初始化或销毁方法。
 
-**Bean作用范围**：    通过bean->bean.scope="prototype"指定。
+**Bean作用范围**： 通过bean->bean.scope="prototype"指定。
 
-**Bean延迟初始化**：  通过bean->bean.lazyInit=true指定。
+**Bean延迟初始化**： 通过bean->bean.lazyInit=true指定。
 
 **应用场景**：
 
-​         1、基于Groovy DSL配置的优势在于可以通过Groovy脚本灵活控制Bean初始化的过程。如果实例化Bean的逻辑比较复杂，则比较适合基于Groovy DSL配置的方式。
+​ 1、基于Groovy DSL配置的优势在于可以通过Groovy脚本灵活控制Bean初始化的过程。如果实例化Bean的逻辑比较复杂，则比较适合基于Groovy DSL配置的方式。
 
- 
-
-![](F:\Typora数据储存\Spring\Spring.assets\image-20200624172023357.png)![image-20200626100931779](F:\Typora数据储存\Spring\Spring.assets\image-20200626100931779.png)
+![](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624172023357.png) ![image-20200626100931779](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626100931779.png)
 
 * 应用工厂方法创建需要的资源，以供APP调用，放入Map类型的bean容器中以便只创建一个对象并只一直对这个对象进行操作
 
-![image-20200624175855384](F:\Typora数据储存\Spring\Spring.assets\image-20200624175855384.png)
+![image-20200624175855384](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624175855384.png)
 
-![image-20200624175911269](F:\Typora数据储存\Spring\Spring.assets\image-20200624175911269.png)
+![image-20200624175911269](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624175911269.png)
 
 * 在工厂中创建bean对象的三种方法，默认构造函数若有constructor-arg则可以用带参数的构造函数。
 
-![image-20200624190047128](F:\Typora数据储存\Spring\Spring.assets\image-20200624190047128.png)
+![image-20200624190047128](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624190047128.png)
 
-![image-20200624195026798](F:\Typora数据储存\Spring\Spring.assets\image-20200624195026798.png)
+![image-20200624195026798](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624195026798.png)
 
-![image-20200624200708233](F:\Typora数据储存\Spring\Spring.assets\image-20200624200708233.png)
+![image-20200624200708233](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624200708233.png)
 
 * 如果经常变化的数据，并不适用于注入的方式
 
-![image-20200626105404879](F:\Typora数据储存\Spring\Spring.assets\image-20200626105404879.png)
+![image-20200626105404879](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626105404879.png)
 
-![image-20200624204112274](F:\Typora数据储存\Spring\Spring.assets\image-20200624204112274.png)
+![image-20200624204112274](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624204112274.png)
 
-![image-20200626111150208](F:\Typora数据储存\Spring\Spring.assets\image-20200626111150208.png)
+![image-20200626111150208](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626111150208.png)
 
-![image-20200626111333772](F:\Typora数据储存\Spring\Spring.assets\image-20200626111333772.png)
+![image-20200626111333772](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626111333772.png)
 
-![image-20200624205352081](F:\Typora数据储存\Spring\Spring.assets\image-20200624205352081.png)
+![image-20200624205352081](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624205352081.png)
 
-![image-20200626111524993](F:\Typora数据储存\Spring\Spring.assets\image-20200626111524993.png)
+![image-20200626111524993](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626111524993.png)
 
 * 只关心set方法的方法名
 
-![image-20200624210850659](F:\Typora数据储存\Spring\Spring.assets\image-20200624210850659.png)
+![image-20200624210850659](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624210850659.png)
 
 * 两种注入方式都可以
-
 * 注解既可以用于创建bean对象（先用contextsacn扫描），又可以在标签的基础上注入依赖（自动:Autowired,+Qualifier可以指定，Value用于指定基本类型），甚至可以通过Configuration注解涉略掉contextscan扫描
 
-![image-20200625101710248](F:\Typora数据储存\Spring\Spring.assets\image-20200625101710248.png)
+![image-20200625101710248](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625101710248.png)
 
-![image-20200625110311613](F:\Typora数据储存\Spring\Spring.assets\image-20200625110311613.png)![image-20200625111011079](F:\Typora数据储存\Spring\Spring.assets\image-20200625111011079.png)
+![image-20200625110311613](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625110311613.png) ![image-20200625111011079](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625111011079.png)
 
-![image-20200625145355850](F:\Typora数据储存\Spring\Spring.assets\image-20200625145355850.png)
+![image-20200625145355850](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625145355850.png)
 
-![image-20200625151610240](F:\Typora数据储存\Spring\Spring.assets\image-20200625151610240.png)
+![image-20200625151610240](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625151610240.png)
 
-![image-20200625151538155](F:\Typora数据储存\Spring\Spring.assets\image-20200625151538155.png)![image-20200625151917183](F:\Typora数据储存\Spring\Spring.assets\image-20200625151917183.png) 
+![image-20200625151538155](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625151538155.png) ![image-20200625151917183](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625151917183.png)
 
-
-
-![image-20200625184727135](F:\Typora数据储存\Spring\Spring.assets\image-20200625184727135.png)
+![image-20200625184727135](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625184727135.png)
 
 * 数据源也可配置成容器、Runner面对多个Dao对象时的线程安全
 
-![image-20200625202915987](F:\Typora数据储存\Spring\Spring.assets\image-20200625202915987.png)
+![image-20200625202915987](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625202915987.png)
 
-![image-20200625204425267](F:\Typora数据储存\Spring\Spring.assets\image-20200625204425267.png)
+![image-20200625204425267](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625204425267.png)
 
 * 需要创建容器的类用于AnnotationConfigApplicationContext是不注解也会自动加入容器
 
-![image-20200625212914836](F:\Typora数据储存\Spring\Spring.assets\image-20200625212914836.png)
+![image-20200625212914836](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625212914836.png)
 
-![image-20200625213822300](F:\Typora数据储存\Spring\Spring.assets\image-20200625213822300.png)
+![image-20200625213822300](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625213822300.png)
 
 * 如果是导入的包用xml比较合适，如果是自己写的类，注解方便点
 
-![image-20200625215604223](F:\Typora数据储存\Spring\Spring.assets\image-20200625215604223.png)
+![image-20200625215604223](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625215604223.png)
 
 * RunWith用Junit的Srpingtest依赖（maven），再用ContextConfiguration标明容器化的位置，再用Autowired的自动注入（扫描注解会自动生成容器）
 
-![image-20200626153808540](F:\Typora数据储存\Spring\Spring.assets\image-20200626153808540.png)
+![image-20200626153808540](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626153808540.png)
 
-![image-20200626153840701](F:\Typora数据储存\Spring\Spring.assets\image-20200626153840701.png)
+![image-20200626153840701](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626153840701.png)
 
-![image-20200626154123981](F:\Typora数据储存\Spring\Spring.assets\image-20200626154123981.png)
+![image-20200626154123981](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626154123981.png)
 
-* cglib
+*   cglib
 
-  ![image-20200626164023501](F:\Typora数据储存\Spring\Spring.assets\image-20200626164023501.png)
+    ![image-20200626164023501](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626164023501.png)
 
-![image-20200626164131453](F:\Typora数据储存\Spring\Spring.assets\image-20200626164131453.png)
+![image-20200626164131453](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626164131453.png)
 
-# AOP
+## AOP
 
-
-
-![image-20200626193001665](F:\Typora数据储存\Spring\Spring.assets\image-20200626193001665.png)
-
-
+![image-20200626193001665](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626193001665.png)
 
 通过动态代理实现面向切面的编程，是函数式编程的可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性。
 
@@ -187,51 +173,43 @@ JointPoint：程序运行中的一个被拦截的行为
 
 PointCut：invoke方法中对于Joinpoint的调用的行为
 
-![image-20200626201506651](F:\Typora数据储存\Spring\Spring.assets\image-20200626201506651.png)
+![image-20200626201506651](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626201506651.png)
 
 * 连接点（所有被代理接口中的方法），切入点：连接点中被增强的连接点
 
-![image-20200626201913615](F:\Typora数据储存\Spring\Spring.assets\image-20200626201913615.png)
+![image-20200626201913615](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626201913615.png)
 
-![image-20200626202152133](F:\Typora数据储存\Spring\Spring.assets\image-20200626202152133.png)
+![image-20200626202152133](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626202152133.png)
 
-![image-20200626202743981](F:\Typora数据储存\Spring\Spring.assets\image-20200626202743981.png)
+![image-20200626202743981](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626202743981.png)
 
-## <aop:aspect>
+### [aop:aspect](aop:aspect)
 
-![image-20200626205509055](F:\Typora数据储存\Spring\Spring.assets\image-20200626205509055.png)
+![image-20200626205509055](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626205509055.png)
 
-![image-20200626205443285](F:\Typora数据储存\Spring\Spring.assets\image-20200626205443285.png)
+![image-20200626205443285](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626205443285.png)
 
-![image-20200626205535029](F:\Typora数据储存\Spring\Spring.assets\image-20200626205535029.png)  
+![image-20200626205535029](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626205535029.png)
 
-![image-20200626211959142](F:\Typora数据储存\Spring\Spring.assets\image-20200626211959142.png)
+![image-20200626211959142](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626211959142.png)
 
-<img src="F:\Typora数据储存\Spring\Spring.assets\image-20200626212051843.png" alt="image-20200626212051843" style="zoom:150%;" />
-
-<img src="F:\Typora数据储存\Spring\Spring.assets\image-20200626212334057.png" alt="image-20200626212334057" style="zoom:150%;" />
-
-<img src="F:\Typora数据储存\Spring\Spring.assets\image-20200626213237753.png" alt="image-20200626213237753" style="zoom: 200%;" />
-
-<img src="F:\Typora数据储存\Spring\Spring.assets\image-20200626213257768.png" alt="image-20200626213257768" style="zoom:200%;" />
+![image-20200626212051843](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626212051843.png) ![image-20200626212334057](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626212334057.png) ![image-20200626213237753](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626213237753.png) ![image-20200626213257768](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626213257768.png)
 
 * 四个通知类型，配置切入点表达式，在aop：aspect外面的切入点表达式需要在配置通知前面
 
-![image-20200626214046683](F:\Typora数据储存\Spring\Spring.assets\image-20200626214046683.png)
+![image-20200626214046683](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626214046683.png)
 
+![image-20200626215320009](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626215320009.png)
 
+![image-20200626215333127](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626215333127.png)
 
-![image-20200626215320009](F:\Typora数据储存\Spring\Spring.assets\image-20200626215320009.png)
+![image-20200626215402944](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626215402944.png)
 
-![image-20200626215333127](F:\Typora数据储存\Spring\Spring.assets\image-20200626215333127.png)
+![image-20200626220829370](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626220829370.png)
 
-![image-20200626215402944](F:\Typora数据储存\Spring\Spring.assets\image-20200626215402944.png)
+* 注解AOP如果不用环绕用别的，会出现顺序问题，如果要用，建议用环绕
 
-![image-20200626220829370](F:\Typora数据储存\Spring\Spring.assets\image-20200626220829370.png)
-
-* 注解AOP如果不用环绕用别的，会出现顺序问题，如果要用，建议用环绕 
-
-## aop:advice
+### aop:advice
 
 ```xml
 <aop:config>
@@ -240,19 +218,19 @@ PointCut：invoke方法中对于Joinpoint的调用的行为
 </aop:config>   
 ```
 
-## 两者的区别
+### 两者的区别
 
 1. 从配置文件上看
 
-> <aop:advisor> 直接通过advice-ref和pointcut-ref只想advice(切入的方法实现)和point
+> [aop:advisor](aop:advisor) 直接通过advice-ref和pointcut-ref只想advice(切入的方法实现)和point
 >
-> <aop:aspect> 需要在内部定义不同的advice类型，比如<aop:around>（aop：pointcut是可以写在aop：aspect外部的，但要在配置通知前面） 
+> [aop:aspect](aop:aspect) 需要在内部定义不同的advice类型，比如[aop:around](aop:around)（aop：pointcut是可以写在aop：aspect外部的，但要在配置通知前面）
 
-2. 从代码编写上看
+1. 从代码编写上看
 
-> <aop:aspect>内部指定了Advice的类型，所以adviceHandler的实现类不需要实现任何借口，直接定义即可
+> [aop:aspect](aop:aspect)内部指定了Advice的类型，所以adviceHandler的实现类不需要实现任何借口，直接定义即可
 >
-> ``` java
+> ```java
 > public class AdviceHandler  {
 >     public Object doAround(ProceedingJoinPoint pjp) throws Throwable {
 >         System.out.println("-----doAround().invoke-----");
@@ -264,7 +242,7 @@ PointCut：invoke方法中对于Joinpoint的调用的行为
 > }
 > ```
 >
-> 而<aop:advisor>对应的Advice实现就需要实现Advice接口，比如MethodBeforeAdvice。
+> 而[aop:advisor](aop:advisor)对应的Advice实现就需要实现Advice接口，比如MethodBeforeAdvice。
 >
 > ```java
 > public class AdviceHandler implements MethodBeforeAdvice, AfterReturningAdvice {
@@ -279,82 +257,79 @@ PointCut：invoke方法中对于Joinpoint的调用的行为
 > }
 > ```
 
-3. ##### 从Spring解析过程来看
+1. **从Spring解析过程来看**
 
 https://www.jianshu.com/p/7388398d7019
 
-# 数据访问层封装
+## 数据访问层封装
 
-![](F:\Typora数据储存\Spring\Spring.assets\image-20200626233906439.png)
+![](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626233906439.png)
 
-* BeanPropertyRowMapper和RowMapper的区别（bean封装了RowMapper需要自己实现的部分）
+*   BeanPropertyRowMapper和RowMapper的区别（bean封装了RowMapper需要自己实现的部分）
 
-  ![image-20200627221326997](F:\Typora数据储存\Spring\Spring.assets\image-20200627221326997.png)
-
+    ![image-20200627221326997](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627221326997.png)
 * JdbcDaoSupport的使用以及Dao的两种编写方式
-  
   * 注解时多个Template是无法autowired+其他的改边指定
-* ![image-20200627232303922](F:\Typora数据储存\Spring\Spring.assets\image-20200627232303922.png)
-  
+* ![image-20200627232303922](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627232303922.png)
   * 灵活
 
-![image-20200627232331122](F:\Typora数据储存\Spring\Spring.assets\image-20200627232331122.png)
+![image-20200627232331122](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627232331122.png)
 
-![image-20200627235605512](F:\Typora数据储存\Spring\Spring.assets\image-20200627235605512.png)
+![image-20200627235605512](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627235605512.png)
 
-![image-20200628000302772](F:\Typora数据储存\Spring\Spring.assets\image-20200628000302772.png)
+![image-20200628000302772](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000302772.png)
 
-![image-20200628000313928](F:\Typora数据储存\Spring\Spring.assets\image-20200628000313928.png)
+![image-20200628000313928](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000313928.png)
 
-![image-20200628000321085](F:\Typora数据储存\Spring\Spring.assets\image-20200628000321085.png)
+![image-20200628000321085](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000321085.png)
 
-![image-20200628000338472](F:\Typora数据储存\Spring\Spring.assets\image-20200628000338472.png)
+![image-20200628000338472](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000338472.png)
 
-# SPRING事务传播机制
+## SPRING事务传播机制
 
 在多个方法的调用中是如何传递的，是重新创建事务还是使用父方法的事务？父方法的回滚对子方法的事务是否有影响？这些都是可以通过事务传播机制来决定的
 
-| 事务传播行为类型          | 说明                                                         |
-| ------------------------- | ------------------------------------------------------------ |
-| PROPAGATION_REQUIRED      | 如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。这是最常见的选择。 |
-| PROPAGATION_SUPPORTS      | 支持当前事务，如果当前没有事务，就以非事务方式执行。         |
-| PROPAGATION_MANDATORY     | 使用当前的事务，如果当前没有事务，就抛出异常。               |
-| PROPAGATION_REQUIRES_NEW  | 新建事务，如果当前存在事务，把当前事务挂起。                 |
-| PROPAGATION_NOT_SUPPORTED | 以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。   |
-| PROPAGATION_NEVER         | 以非事务方式执行，如果当前存在事务，则抛出异常。             |
-| PROPAGATION_NESTED        | 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类似的操作。 |
+| 事务传播行为类型                    | 说明                                                          |
+| --------------------------- | ----------------------------------------------------------- |
+| PROPAGATION\_REQUIRED       | 如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。这是最常见的选择。             |
+| PROPAGATION\_SUPPORTS       | 支持当前事务，如果当前没有事务，就以非事务方式执行。                                  |
+| PROPAGATION\_MANDATORY      | 使用当前的事务，如果当前没有事务，就抛出异常。                                     |
+| PROPAGATION\_REQUIRES\_NEW  | 新建事务，如果当前存在事务，把当前事务挂起。                                      |
+| PROPAGATION\_NOT\_SUPPORTED | 以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。                               |
+| PROPAGATION\_NEVER          | 以非事务方式执行，如果当前存在事务，则抛出异常。                                    |
+| PROPAGATION\_NESTED         | 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION\_REQUIRED类似的操作。 |
 
-![image-20200628000514554](F:\Typora数据储存\Spring\Spring.assets\image-20200628000514554.png)
+![image-20200628000514554](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000514554.png)
 
 * 基于XML的事务控制管理
 
-![image-20200628114156648](F:\Typora数据储存\Spring\Spring.assets\image-20200628114156648.png)
+![image-20200628114156648](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628114156648.png)
 
-![image-20200628114223723](F:\Typora数据储存\Spring\Spring.assets\image-20200628114223723.png)
+![image-20200628114223723](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628114223723.png)
 
 * 基于注解的事务控制管理（任用xml配置datasource和扫描）
 
-![image-20200628132748481](F:\Typora数据储存\Spring\Spring.assets\image-20200628132748481.png)
+![image-20200628132748481](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628132748481.png)
 
-![image-20200628132818785](F:\Typora数据储存\Spring\Spring.assets\image-20200628132818785.png)
+![image-20200628132818785](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628132818785.png)
 
 * 纯注解的事务控制管理
 
-![image-20200628134037927](F:\Typora数据储存\Spring\Spring.assets\image-20200628134037927.png)
+![image-20200628134037927](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628134037927.png)
 
-# Spring Bean
+## Spring Bean
 
 **由Scope为Singleton时交由Spring容器管理时有如下生命周期流程，若是prototype则交由程序自己控制。**
 
-### **一、生命周期流程图：**
+#### **一、生命周期流程图：**
 
-![image-20201030134546745](F:\Typora数据储存\Spring\Spring.assets\image-20201030134546745.png)
+![image-20201030134546745](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20201030134546745.png)
 
-### **二、各种接口方法分类**
+#### **二、各种接口方法分类**
 
 Bean的完整生命周期经历了各种方法调用，这些方法可以划分为以下几类：
 
-1、Bean自身的方法　　：　　这个包括了Bean本身调用的方法和通过配置文件中<bean>的init-method和destroy-method指定的方法
+1、Bean自身的方法　　：　　这个包括了Bean本身调用的方法和通过配置文件中的init-method和destroy-method指定的方法
 
 2、Bean级生命周期接口方法　　：　　这个包括了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这些接口的方法
 
@@ -362,13 +337,13 @@ Bean的完整生命周期经历了各种方法调用，这些方法可以划分�
 
 4、工厂后处理器接口方法　　：　　这个包括了AspectJWeavingEnabler, ConfigurationClassPostProcessor, CustomAutowireConfigurer等等非常有用的工厂后处理器　　接口的方法。工厂后处理器也是容器级的。在应用上下文装配配置文件之后立即调用。
 
-### **三、演示**
+#### **三、演示**
 
 我们用一个简单的Spring Bean来演示一下Spring Bean的生命周期。
 
-1、首先是一个简单的Spring Bean，调用Bean自身的方法和Bean级生命周期接口方法，为了方便演示，它实现了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这4个接口，同时有2个方法，对应配置文件中<bean>的init-method和destroy-method。如下：
+1、首先是一个简单的Spring Bean，调用Bean自身的方法和Bean级生命周期接口方法，为了方便演示，它实现了BeanNameAware、BeanFactoryAware、InitializingBean和DiposableBean这4个接口，同时有2个方法，对应配置文件中的init-method和destroy-method。如下：
 
- ```java
+```java
 package springBeanTest;
 
 import org.springframework.beans.BeansException;
@@ -379,94 +354,94 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * @author qsk
- */
+* @author qsk
+*/
 public class Person implements BeanFactoryAware, BeanNameAware,
-        InitializingBean, DisposableBean {
+       InitializingBean, DisposableBean {
 
-    private String name;
-    private String address;
-    private int phone;
+   private String name;
+   private String address;
+   private int phone;
 
-    private BeanFactory beanFactory;
-    private String beanName;
+   private BeanFactory beanFactory;
+   private String beanName;
 
-    public Person() {
-        System.out.println("【构造器】调用Person的构造器实例化");
-    }
+   public Person() {
+       System.out.println("【构造器】调用Person的构造器实例化");
+   }
 
-    public String getName() {
-        return name;
-    }
+   public String getName() {
+       return name;
+   }
 
-    public void setName(String name) {
-        System.out.println("【注入属性】注入属性name");
-        this.name = name;
-    }
+   public void setName(String name) {
+       System.out.println("【注入属性】注入属性name");
+       this.name = name;
+   }
 
-    public String getAddress() {
-        return address;
-    }
+   public String getAddress() {
+       return address;
+   }
 
-    public void setAddress(String address) {
-        System.out.println("【注入属性】注入属性address");
-        this.address = address;
-    }
+   public void setAddress(String address) {
+       System.out.println("【注入属性】注入属性address");
+       this.address = address;
+   }
 
-    public int getPhone() {
-        return phone;
-    }
+   public int getPhone() {
+       return phone;
+   }
 
-    public void setPhone(int phone) {
-        System.out.println("【注入属性】注入属性phone");
-        this.phone = phone;
-    }
+   public void setPhone(int phone) {
+       System.out.println("【注入属性】注入属性phone");
+       this.phone = phone;
+   }
 
-    @Override
-    public String toString() {
-        return "Person [address=" + address + ", name=" + name + ", phone="
-                + phone + "]";
-    }
+   @Override
+   public String toString() {
+       return "Person [address=" + address + ", name=" + name + ", phone="
+               + phone + "]";
+   }
 
-    // 这是BeanFactoryAware接口方法
-    @Override
-    public void setBeanFactory(BeanFactory arg0) throws BeansException {
-        System.out
-                .println("【BeanFactoryAware接口】调用BeanFactoryAware.setBeanFactory()");
-        this.beanFactory = arg0;
-    }
+   // 这是BeanFactoryAware接口方法
+   @Override
+   public void setBeanFactory(BeanFactory arg0) throws BeansException {
+       System.out
+               .println("【BeanFactoryAware接口】调用BeanFactoryAware.setBeanFactory()");
+       this.beanFactory = arg0;
+   }
 
-    // 这是BeanNameAware接口方法
-    @Override
-    public void setBeanName(String arg0) {
-        System.out.println("【BeanNameAware接口】调用BeanNameAware.setBeanName()");
-        this.beanName = arg0;
-    }
+   // 这是BeanNameAware接口方法
+   @Override
+   public void setBeanName(String arg0) {
+       System.out.println("【BeanNameAware接口】调用BeanNameAware.setBeanName()");
+       this.beanName = arg0;
+   }
 
-    // 这是InitializingBean接口方法
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        System.out
-                .println("【InitializingBean接口】调用InitializingBean.afterPropertiesSet()");
-    }
+   // 这是InitializingBean接口方法
+   @Override
+   public void afterPropertiesSet() throws Exception {
+       System.out
+               .println("【InitializingBean接口】调用InitializingBean.afterPropertiesSet()");
+   }
 
-    // 这是DiposibleBean接口方法
-    @Override
-    public void destroy() throws Exception {
-        System.out.println("【DiposibleBean接口】调用DiposibleBean.destory()");
-    }
+   // 这是DiposibleBean接口方法
+   @Override
+   public void destroy() throws Exception {
+       System.out.println("【DiposibleBean接口】调用DiposibleBean.destory()");
+   }
 
-    // 通过<bean>的init-method属性指定的初始化方法
-    public void myInit() {
-        System.out.println("【init-method】调用<bean>的init-method属性指定的初始化方法");
-    }
+   // 通过<bean>的init-method属性指定的初始化方法
+   public void myInit() {
+       System.out.println("【init-method】调用<bean>的init-method属性指定的初始化方法");
+   }
 
-    // 通过<bean>的destroy-method属性指定的初始化方法
-    public void myDestory() {
-        System.out.println("【destroy-method】调用<bean>的destroy-method属性指定的初始化方法");
-    }
+   // 通过<bean>的destroy-method属性指定的初始化方法
+   public void myDestory() {
+       System.out.println("【destroy-method】调用<bean>的destroy-method属性指定的初始化方法");
+   }
 }
- ```
+```
 
 2、接下来是演示BeanPostProcessor接口的方法，如下：
 
@@ -673,9 +648,9 @@ Person [address=广州, name=张三, phone=110]
 【destroy-method】调用<bean>的destroy-method属性指定的初始化方法
 ```
 
-# Spring在SingleTon模式下的线程安全
+## Spring在SingleTon模式下的线程安全
 
-## 有状态和无状态Bean
+### 有状态和无状态Bean
 
 有状态bean：每个用户有自己特有的一个实例，在用户的生存期内，bean保存了用户的信息，即有状态；一旦用户灭亡（调用结束或实例结束），bean的生命期也告结束。即每个用户最初都会得到一个初始的bean。
 
@@ -691,11 +666,7 @@ Person [address=广州, name=张三, phone=110]
 
 **Spring根本就没有对bean的多线程安全问题做出任何保证与措施**。对于每个bean的线程安全问题，根本原因是每个bean自身的设计。**不要将有状态的Bean设置成Singleton模式，如果必须将此Bean共享但变量相互独立、线程安全，那么就使用ThreadLocal把变量变为线程私有的，如果有状态bean的实例变量或类变量需要在多个线程之间共享，那么就只能使用synchronized、lock、CAS等这些实现线程同步的方法了。**
 
-
-
-
-
-##  Threadlocal实现单例线程安全
+### Threadlocal实现单例线程安全
 
 https://juejin.cn/post/6844903509037416455
 
@@ -709,16 +680,13 @@ ThreadLocal中含有一个叫做ThreadLocalMap的内部类，该类为一个采�
 
 **ThreadLocalMap是每个线程独享的，ThreadLocalMap用一个Entry数组存储我们不想共享的变量，通过ThreadLocal依据不同的Thread找到对应的ThreadLocalMap并提供对Entry的CRUD操作与内存释放（getEntry、Set、remove方法都会检测空的Entry并删除，防止内存泄漏）**
 
+## BeanDefinitionRegistry
 
-
-# BeanDefinitionRegistry
-
-`BeanDefinitionRegistry`是一个接口， 实现了`AliasRegistry`接口， 定义了一些对 bean的常用操作。
-关于`AliasRegistry`其实已经介绍过了：
+`BeanDefinitionRegistry`是一个接口， 实现了`AliasRegistry`接口， 定义了一些对 bean的常用操作。 关于`AliasRegistry`其实已经介绍过了：
 
 它大概有如下功能：
 
-1. 以Map<String, BeanDefinition>的形式注册bean
+1. 以Map\<String, BeanDefinition>的形式注册bean
 2. 根据beanName 删除和获取 beanDefiniation
 3. 得到持有的beanDefiniation的数目
 4. 根据beanName 判断是否包含beanDefiniation
@@ -745,7 +713,7 @@ public interface BeanDefinitionRegistry extends AliasRegistry {
 }
 ```
 
-### SimpleBeanDefinitionRegistry
+#### SimpleBeanDefinitionRegistry
 
 是默认的一个实现方式，也是一个非常简单的实现。存储用的是ConcurrentHashMap ，可以保证线程安全
 
@@ -778,7 +746,7 @@ public class SimpleBeanDefinitionRegistry extends SimpleAliasRegistry implements
 }
 ```
 
-### DefaultListableBeanFactory
+#### DefaultListableBeanFactory
 
 该类是 `BeanDefinitionRegistry` 接口的基本实现类，但同时也实现其他了接口的功能，这里只探究下其关于注册 `BeanDefinition` 实例的相关方法。
 
@@ -927,7 +895,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 }
 ```
 
-### GenericApplicationContext
+#### GenericApplicationContext
 
 ```java
 public class GenericApplicationContext extends AbstractApplicationContext implements BeanDefinitionRegistry {
@@ -951,9 +919,9 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 
 因为是手动档，对API的使用有一定的门槛，因此我们一般情况下不会直接使用它。但是他有两个子类我们是比较熟悉的
 
-###### GenericXmlApplicationContext
+**GenericXmlApplicationContext**
 
-利用XML来配置Bean的定义信息，借助`XmlBeanDefinitionReader`去读取~~~
+利用XML来配置Bean的定义信息，借助`XmlBeanDefinitionReader`去读取\~\~\~
 
 ```java
 public class GenericApplicationContext extends AbstractApplicationContext implements BeanDefinitionRegistry {
@@ -971,7 +939,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 > 备注：`AnnotationConfigWebApplicationContext`、`XmlWebApplicationContext`都继承自`AbstractRefreshableConfigApplicationContext`，从而也最终继承了`AbstractApplicationContext
 > ```
 
-###### AnnotationConfigApplicationContext
+**AnnotationConfigApplicationContext**
 
 注解驱动去扫描Bean的定义信息。先用`ClassPathBeanDefinitionScanner`把文件都扫描进来，然后用`AnnotatedBeanDefinitionReader`去load没有里面的Bean定义信息。
 
@@ -985,34 +953,29 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 ApplicationContext`体系里只有子体系`GenericApplicationContext`下才能直接操作注册中心。比如常用的：`GenericXmlApplicationContext`和`AnnotationConfigApplicationContext
 ```
 
-#### 手动注册BeanDefinition（编程方式注册Bean定义）
+**手动注册BeanDefinition（编程方式注册Bean定义）**
 
 手动注册bean的两种方式：
 
 1. 实现`ImportBeanDefinitionRegistrar`
 2. 实现`BeanDefinitionRegistryPostProcessor`
 
-
-
 但解析的`BeanDefinition`如何交给`BeanFactory`处理呢？
 
 **各种不同的BeanFactory有不同的`getbean ()`方法，不同的`getbean()`方法会有不同的方式使用beanDefinition，来获得相应的bean对象进入容器中，至于为什么需要beanDefinition而不是直接初始化bean，是因为bean 的实例化与注入属性，各种aware接口的实现，与初始化时会有Listnener等与processor类进行其他的前置和后置处理。**
 
+## @Controller和@RestController的区别?
 
+1.  使用@Controller 注解，在对应的方法上，视图解析器可以解析return 的jsp,html页面，并且跳转到相应页面
 
-# @Controller和@RestController的区别?
+    若返回json等内容到页面，则需要加@ResponseBody注解
+2. @RestController注解，相当于@Controller+@ResponseBody两个注解的结合，返回json数据不需要在方法前面加@ResponseBody注解了，但使用@RestController这个注解，就不能返回jsp,html页面，视图解析器无法解析jsp,html页面
 
-1. 使用@Controller 注解，在对应的方法上，视图解析器可以解析return 的jsp,html页面，并且跳转到相应页面
-
-   若返回json等内容到页面，则需要加@ResponseBody注解
-
-2.  @RestController注解，相当于@Controller+@ResponseBody两个注解的结合，返回json数据不需要在方法前面加@ResponseBody注解了，但使用@RestController这个注解，就不能返回jsp,html页面，视图解析器无法解析jsp,html页面
-
-# ByName与ByType
+## ByName与ByType
 
 `byName`就是通过Bean的id或者name，`byType`就是按Bean的Class的类型
 
-# 依赖注入
+## 依赖注入
 
 依赖注入的作用
 
@@ -1020,25 +983,20 @@ ApplicationContext`体系里只有子体系`GenericApplicationContext`下才能�
 
 另一个是通过依赖注入的实现，使得基于Spring容器的生成bean基本都能由Spring容器进行管理，使得初始化或释放资源等生命周期管理的功能集中到一个Srping容器中，减轻维护的风险
 
-# 语法糖
+## 语法糖
 
 语法糖（Syntactic sugar）是一种语法，旨在让代码更适合人类阅读、理解，使得代码更“甜”。
 
-https://blog.csdn.net/weixin_41712059/article/details/103151238
+https://blog.csdn.net/weixin\_41712059/article/details/103151238
 
-> ### **语法糖**
+> #### **语法糖**
 >
 > 　　语法糖（Syntactic Sugar），也称糖衣语法，是由英国计算机学家 Peter.J.Landin 发明的一个术语，指在计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。简而言之，语法糖让程序更加简洁，有更高的可读性。有意思的是，在编程领域，除了语法糖，还有语法盐和语法糖精的说法，篇幅有限这里不做扩展了。
 >
 > 　　我们所熟知的编程语言中几乎都有语法糖。作者认为，语法糖的多少是评判一个语言够不够牛逼的标准之一。很多人说Java是一个“低糖语言”，其实从Java 7开始Java语言层面上一直在添加各种糖，主要是在“Project Coin”项目下研发。尽管现在Java有人还是认为现在的Java是低糖，未来还会持续向着“高糖”的方向发展。
 >
-> ###  
+> ####
 >
-> ### **解语法糖**
+> #### **解语法糖**
 >
 > 　　前面提到过，语法糖的存在主要是方便开发人员使用。但其实，Java虚拟机并不支持这些语法糖。这些语法糖在编译阶段就会被还原成简单的基础语法结构，这个过程就是解语法糖。说到编译，大家肯定都知道，Java语言中，javac命令可以将后缀名为.java的源文件编译为后缀名为.class的可以运行于Java虚拟机的字节码。如果你去看com.sun.tools.javac.main.JavaCompiler的源码，你会发现在compile()中有一个步骤就是调用desugar()，这个方法就是负责解语法糖的实现的。**属于语法糖部分的代码，在jdk中的javac前端编译器编译成字节码文件时便已经解语法糖，变成了即时编译器JVM支持的基础语法结构**，**Java 中最常用的语法糖主要有泛型、变长参数、条件编译、自动拆装箱、内部类、匿名内部类引用局部变量的final、枚举类等。**
-
-
-
-
-
