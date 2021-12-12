@@ -1,8 +1,10 @@
-# 概述
+# zookeeper
+
+## 概述
 
 Zookeeper 是一个开源的分布式的，为分布式应用提供**协调服务**的Apache项目。
 
-## 工作机制
+### 工作机制
 
 Zookeeper从从设计模式来理解：是一个基于观察者模式设计的分布式管理框架，它存储一些关键数据，然后接受观察者的注册，一旦数据的状态发生变化，就负责通知再Zookeeper上注册了的观察者做出相应的反应。
 
@@ -10,74 +12,69 @@ Zookeeper相对于服务器是观察者，相对于客户端是被观察者
 
 Zookeeper = 文件系统 + 通知机制
 
-## 特点
+### 特点
 
 1. Zookeeper：一个领导者（Leader），多个跟随者（Follower）组成的集群
 2. **集群中只要有半数以上节点存活，Zookeeper集群就能存活**
-
 3. 全局数据一致：每个Server保存一份相同的数据副本，Client无论连接到哪个Server，数据都是一致的。
 4. 更新请求顺序：Zo'okeeper符合顺序一致性，所有到达follower的写请求都要转交给Leader，经过Leader的处理后，其他follower看到的这些请求顺序便是一致的，来自同一个Client的更新请求按其发送顺序依次执行。
 5. 数据更新原子性：一次数据更新要么成功，要么失败。
 6. 实时性：在一定时间范围内：Client能读到最新数据。
 
-## 数据结构
+### 数据结构
 
 与Unix文件系统很类似，整体上可以看成一棵树，**每个节点称作一个ZNode，每一个ZNode默认存储1MB的数据，每个ZNode可以通过其路径唯一标识。**
 
-![image-20210414214637015](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210414214637015.png)
+![image-20210414214637015](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210414214637015.png)
 
-## 应用场景
+### 应用场景
 
-​	提供的服务包括：统一命名服务、统一配置管理、统一集群管理、服务器节点动态上下线、软负载均衡等。
+​ 提供的服务包括：统一命名服务、统一配置管理、统一集群管理、服务器节点动态上下线、软负载均衡等。
 
-### 统一命名服务
+#### 统一命名服务
 
 对应用/服务进行统一命名，便于识别。
 
 如：客户端请求到统一域名，然后在Zookeeper分配主机IP转发请求。
 
-
-
-### 统一配置管理
+#### 统一配置管理
 
 分布式环境中，统一配置管理的原因：
 
 1. 保持所有节点的配置信息是一致的
 2. 对配置文件的修改，希望快速同步到各个节点上
 
-### 统一集群管理
+#### 统一集群管理
 
-### 服务器动态上下线 
+#### 服务器动态上下线
 
-### 软负载均衡
+#### 软负载均衡
 
 在Zookeeper中记录每台服务器的访问数，让访问数最少的服务器去处理最新的客户端请求
 
+## Zookeeper安装
 
-
-# Zookeeper安装
-
-### 下载并解压
+#### 下载并解压
 
 1. http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.5.9/
 
 **上面的镜像站需要VPN才能访问，Linux需要自己配VPN或者在Windows下载再从CRT拉过去,一定要下bin的，不然启动不了**
 
-2. 解压
+1. 解压
 
 ```shell
 tar -zxvf zookeeper-3.4.13.bin.tar.gz
 ```
 
-3. **因为zk是用java编写的，因此需要jre环境调库运行**
+1. **因为zk是用java编写的，因此需要jre环境调库运行**
 
-### 编辑配置文件
+#### 编辑配置文件
 
 1．tickTime =2000：通信心跳数，Zookeeper服务器与客户端心跳时间，单位毫秒
 
 Zookeeper使用的基本时间，服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个tickTime时间就会发送一个心跳，时间单位为毫秒。
 
-它用于心跳机制，并且设置最小的session超时时间为两倍心跳时间。(session的最小超时时间是2*tickTime)
+它用于心跳机制，并且设置最小的session超时时间为两倍心跳时间。(session的最小超时时间是2\*tickTime)
 
 2．initLimit =10：LF初始通信时限
 
@@ -85,7 +82,7 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 3．syncLimit =5：LF同步通信时限
 
-集群中Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit * tickTime，Leader认为Follwer死掉，从服务器列表中删除Follwer。
+集群中Leader与Follower之间的最大响应时间单位，假如响应超过syncLimit \* tickTime，Leader认为Follwer死掉，从服务器列表中删除Follwer。
 
 4．dataDir：数据文件目录+数据持久化路径
 
@@ -95,20 +92,18 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 监听客户端连接的端口。
 
-6. electionAlg：（1-3）
+1. electionAlg：（1-3）
 
 > 1. LeaderElection算法
 > 2. AuthFastLeaderElection算法
 > 3. FastLeaderElection算法（默认）
 
-
-
-# 	选举机制
+## 选举机制
 
 1. 半数机制：集群中半数以上机器存活，集群可用。所以Zookeeper适合安装**奇数台服务器**。（多一台半数的时候也不能用，浪费资源）
 2. 选举机制中的概念：
 
-## 名词意义
+### 名词意义
 
 > serverId（服务器ID SID)：用来唯一标识一台zk集群中的机器，每台机器不能重复，和myid一致
 >
@@ -116,7 +111,7 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 >
 > epoch（逻辑时钟 即PeerEpoch）：每个Leader任期的代号，没有Leader的时候会用逻辑时钟来代替
 
-## 投票内容
+### 投票内容
 
 > 选举人ID
 >
@@ -130,9 +125,9 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 >
 > 推举人选举轮数
 
-## 选举类型
+### 选举类型
 
-### 服务器启动时期的 Leader 选举
+#### 服务器启动时期的 Leader 选举
 
 在集群初始化阶段，当有一台服务器Server1启动时，其单独无法进行和完成Leader选举，当第二台服务器Server2启动后，此时两台机器可以相互通信，每台机器都试图找到Leader，于是进入Leader选举过程。选举过程如下：
 
@@ -154,9 +149,9 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **(5) 改变服务器状态**。一旦确定了Leader，每个服务器就会更新自己的状态，如果是Follower，那么就变更为FOLLOWING，如果是Leader，就变更为LEADING。
 
-![image-20210718062858816](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062858816.png)
+![image-20210718062858816](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062858816.png)
 
-### 服务器运行时期的 Leader 选举
+#### 服务器运行时期的 Leader 选举
 
 在Zookeeper运行期间，即便当有非Leader服务器宕机或新加入，此时也不会影响Leader，但是**一旦Leader服务器挂了，那么整个集群将暂停对外服务，进入新一轮Leader选举**，其过程和启动时期的Leader选举过程基本一致。假设正在运行的有Server1、Server2、Server3三台服务器，当前Leader是Server2，若某一时刻Leader挂了，此时便开始Leader选举。选举过程如下：
 
@@ -172,34 +167,32 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **(6)改变服务器的状态**。与启动时过程相同。
 
-![image-20210718062909156](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062909156.png)
+![image-20210718062909156](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062909156.png)
 
-
-
-## Leader选举算法分析
+### Leader选举算法分析
 
 在3.4.0后的Zookeeper的版本只保留了TCP版本的FastLeaderElection选举算法。当一台机器进入Leader选举时，当前集群可能会处于以下两种状态
 
 当ZooKeeper集群中的一台服务器出现以下两种情况之一时，就会开始进入Leader选举。
 
-- 服务器初始化启动。
-- 服务器运行期间无法和Leader保持连接。
+* 服务器初始化启动。
+* 服务器运行期间无法和Leader保持连接。
 
 而当一台机器进入Leader选举流程时，当前集群也可能会处于以下两种状态。
 
-- 集群中本来就巳经存在一个Leader。
-- 集群中确实不存在Leader。
+* 集群中本来就巳经存在一个Leader。
+* 集群中确实不存在Leader。
 
-### leader已存在
+#### leader已存在
 
 我们先来看第一种巳经存在Leader的情况。此种情况一般都是某台机器启动得较晚，在其启动之前，集群已经在正常工作，对这种情况，该机器试图去选举Leader时，会被告知当前服务器的Leader信息，对于该机器而言，仅仅需要和Leader机器建立起连接，并进行状态同步即可。
 
-### Leader不存在的情况下
+#### Leader不存在的情况下
 
 常有两种情况会导致集群中不存在Leader
 
-- 一种情况是在整个服务器刚刚初始化启动时，此时尚未产生一台Leader服务器。
-- 另一种情况就是在运行期间当前Leader所在的服务器挂了。
+* 一种情况是在整个服务器刚刚初始化启动时，此时尚未产生一台Leader服务器。
+* 另一种情况就是在运行期间当前Leader所在的服务器挂了。
 
 无论是哪种情况，此时集群中的所有机器都处于一种试图选举出一个Leader的状态，我们把这种状态称为“LOOKING”，意思是说正在寻找Leader。当一台服务器处于LOOKING状态的时候，那么它就会向集群中所有其他机器发送消息，我们称这个消息为“投票”。
 
@@ -213,32 +206,30 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **在第一次投票的时候，由于还无法检测到集群中其他机器的状态信息，因此每台机器都是将自己作为被推举的对象来进行投票**，于是SID为3、4和5的机器，投票情况分别为：（3, 9）、（4, 8）和（5, 8）。
 
-#### 变更投票
+**变更投票**
 
 集群中的每台机器发出自己的投票后，也会接收到来自集群中其他机器的投票。每台机器都会根据一定的规则，来处理收到的其他机器的投票，并以此来决定是否需要变更自己的投票。这个规则也成为了整个Leader选举算法的核心所在。为了便于描述，我们首先定义一些术语。
 
-- vote_sid：接收到的投票中所推举Leader服务器的SID。
-- vote_zxid：接收到的投票中所推举Leader服务器的ZXID，既事物ID。
-- self_sid:：当前服务器自己的SID。
-- self_zxid：当前服务器自己的ZXID。
+* vote\_sid：接收到的投票中所推举Leader服务器的SID。
+* vote\_zxid：接收到的投票中所推举Leader服务器的ZXID，既事物ID。
+* self\_sid:：当前服务器自己的SID。
+* self\_zxid：当前服务器自己的ZXID。
 
 每次对于收到的投票的处理，都是一个对（votesid，votezxid)和（selfsid，selfzxid) 对比的过程，假设Epoch相同的情况下。
 
 规则如下：
 
-**1、**如果votezxid大于自己的selfzxid，就认可当前收到的投票，并再次将该投票发送出去。
+\*\*1、\*\*如果votezxid大于自己的selfzxid，就认可当前收到的投票，并再次将该投票发送出去。
 
-**2、**如果votezxid小于自己的selfzxid,那么就坚持自己的投票，不做任何变更。
+\*\*2、\*\*如果votezxid小于自己的selfzxid,那么就坚持自己的投票，不做任何变更。
 
-**3、**如果votezxid等于自己的selfzxid,那么就对比两者的SID。如果votesid大于selfsid，那么就认可当前接收到的投票，并再次将该投票发送出去。
+\*\*3、\*\*如果votezxid等于自己的selfzxid,那么就对比两者的SID。如果votesid大于selfsid，那么就认可当前接收到的投票，并再次将该投票发送出去。
 
-**4、**如果votezxid等于自己的selfzxid，并且votesid小于selfsid，那么同样坚持自己的投票，不做变更。
+\*\*4、\*\*如果votezxid等于自己的selfzxid，并且votesid小于selfsid，那么同样坚持自己的投票，不做变更。
 
 根据上面这个规则，我们结合图来分折上面提到的5台机器组成的ZooKeeper集群的投票变更过程。
 
-![img](F:\Typora数据储存\分布式系统\zookeeper.assets\1708987-20190608231027312-807663468.png)
-
- 
+![img](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5C1708987-20190608231027312-807663468.png)
 
 每台机器都把投票发出后，同时也会接收到来自另外两台机器的投票。
 
@@ -248,7 +239,7 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 同样，对TServer5来说，它接收到了（3, 9）和（4, 8）两个投票，对比后，由于（3, 9）这个投票的ZXID大于自己，因此需要变更投票为（3, 9），然后继续将这个投票发送给另外两台机器。
 
-#### 确定Leader
+**确定Leader**
 
 经过这第二次投票后，集群中的每台机器都会再次收到其他机器的投票，然后开始统计投票。如果一台机器收到了超过半数的相同的投票，那么这个投票对应的SID机器即为 Leader。
 
@@ -256,26 +247,26 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 也就是说，只要收到3个或3个以上（含当前服务器自身在内）一致的投票即可。在这里，Server3、Server4 和Server5 都投票（3, 9），因此确定了 Server3为 Leader。
 
-## Leader选举实现细节
+### Leader选举实现细节
 
 **1、服务器状态**
 
 服务器具有四种状态，分别是LOOKING、FOLLOWING、LEADING、OBSERVING。
 
-- **LOOKING**：寻找Leader状态。当服务器处于该状态时，它会认为当前集群中没有Leader，因此需要进入Leader选举状态。
-- **FOLLOWING**：跟随者状态。表明当前服务器角色是Follower。
-- **LEADING**：领导者状态。表明当前服务器角色是Leader。
-- **OBSERVING**：观察者状态。表明当前服务器角色是Observer。
+* **LOOKING**：寻找Leader状态。当服务器处于该状态时，它会认为当前集群中没有Leader，因此需要进入Leader选举状态。
+* **FOLLOWING**：跟随者状态。表明当前服务器角色是Follower。
+* **LEADING**：领导者状态。表明当前服务器角色是Leader。
+* **OBSERVING**：观察者状态。表明当前服务器角色是Observer。
 
 **2、投票数据结构**
 
 每个投票中包含了两个最基本的信息，所推举服务器的SID和ZXID，投票（Vote）在Zookeeper中包含字段如下。
 
-- **id**：被推举的Leader的SID。
-- **zxid**：被推举的Leader事务ID。
-- **electionEpoch**：逻辑时钟，用来判断多个投票是否在同一轮选举周期中，该值在服务端是一个自增序列，每次进入新一轮的投票后，都会对该值进行加1操作。
-- **peerEpoch**：被推举的Leader的epoch。
-- **state**：当前服务器的状态。
+* **id**：被推举的Leader的SID。
+* **zxid**：被推举的Leader事务ID。
+* **electionEpoch**：逻辑时钟，用来判断多个投票是否在同一轮选举周期中，该值在服务端是一个自增序列，每次进入新一轮的投票后，都会对该值进行加1操作。
+* **peerEpoch**：被推举的Leader的epoch。
+* **state**：当前服务器的状态。
 
 **3、QuorumCnxManager：网络I/O**
 
@@ -283,14 +274,14 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **(1)消息队列**。QuorumCnxManager内部维护了一系列的队列，用来保存接收到的、待发送的消息以及消息的发送器，除接收队列以外，其他队列都按照SID分组形成队列集合，如一个集群中除了自身还有3台机器，那么就会为这3台机器分别创建一个发送队列，互不干扰。
 
-- **recvQueue**：消息接收队列，用于存放那些从其他服务器接收到的消息。
-- **queueSendMap**：消息发送队列，用于保存那些待发送的消息，按照SID进行分组。
-- **·senderWorkerMap**：发送器集合，每个SenderWorker消息发送器，都对应一台远程Zookeeper服务器，负责消息的发送，也按照SID进行分组。
-- **lastMessageSent**：最近发送过的消息，为每个SID保留最近发送过的一个消息。
+* **recvQueue**：消息接收队列，用于存放那些从其他服务器接收到的消息。
+* **queueSendMap**：消息发送队列，用于保存那些待发送的消息，按照SID进行分组。
+* **·senderWorkerMap**：发送器集合，每个SenderWorker消息发送器，都对应一台远程Zookeeper服务器，负责消息的发送，也按照SID进行分组。
+* **lastMessageSent**：最近发送过的消息，为每个SID保留最近发送过的一个消息。
 
 **(2)建立连接**。为了能够相互投票，Zookeeper集群中的所有机器都需要两两建立起网络连接。QuorumCnxManager在启动时会创建一个ServerSocket来监听Leader选举的通信端口(默认为3888)。开启监听后，Zookeeper能够不断地接收到来自其他服务器的创建连接请求，在接收到其他服务器的TCP连接请求时，会进行处理。**为了避免两台机器之间重复地创建TCP连接，Zookeeper只允许SID大的服务器主动和其他机器建立连接，否则断开连接。在接收到创建连接请求后，服务器通过对比自己和远程服务器的SID值来判断是否接收连接请求，如果当前服务器发现自己的SID更大，那么会断开当前连接，然后自己主动和远程服务器建立连接。(是否有作用存疑)一旦连接建立，就会根据远程服务器的SID来创建相应的消息发送器SendWorker和消息接收器RecvWorker，并启动**。
 
-**(3)消息接收与消息发送**。	
+**(3)消息接收与消息发送**。
 
 **消息接收**：由消息接收器RecvWorker负责，**由于Zookeeper为每个远程服务器都分配一个单独的RecvWorker**，因此，每个RecvWorker只需要不断地从这个TCP连接中读取消息，并将其保存到recvQueue队列中。
 
@@ -298,23 +289,21 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **4、FastLeaderElection：选举算法核心**
 
-- **外部投票**：特指其他服务器发来的投票。
-- **内部投票**：服务器自身当前的投票。
-- **选举轮次**：Zookeeper服务器Leader选举的轮次，即logicalclock。
-- **PK**：对内部投票和外部投票进行对比来确定是否需要变更内部投票。
+* **外部投票**：特指其他服务器发来的投票。
+* **内部投票**：服务器自身当前的投票。
+* **选举轮次**：Zookeeper服务器Leader选举的轮次，即logicalclock。
+* **PK**：对内部投票和外部投票进行对比来确定是否需要变更内部投票。
 
 **(1) 选票管理**
 
-- **sendqueue**：选票发送队列，用于保存待发送的选票。
-- **recvqueue**：选票接收队列，用于保存接收到的外部投票。
-- **WorkerReceiver**：选票接收器。其会不断地从QuorumCnxManager中获取其他服务器发来的选举消息，并将其转换成一个选票，然后保存到recvqueue中，在选票接收过程中，如果发现该外部选票的选举轮次小于当前服务器的，那么忽略该外部投票，同时立即发送自己的内部投票。
-- **WorkerSender**：选票发送器，不断地从sendqueue中获取待发送的选票，并将其传递到底层QuorumCnxManager中。
+* **sendqueue**：选票发送队列，用于保存待发送的选票。
+* **recvqueue**：选票接收队列，用于保存接收到的外部投票。
+* **WorkerReceiver**：选票接收器。其会不断地从QuorumCnxManager中获取其他服务器发来的选举消息，并将其转换成一个选票，然后保存到recvqueue中，在选票接收过程中，如果发现该外部选票的选举轮次小于当前服务器的，那么忽略该外部投票，同时立即发送自己的内部投票。
+* **WorkerSender**：选票发送器，不断地从sendqueue中获取待发送的选票，并将其传递到底层QuorumCnxManager中。
 
 **(2) 算法核心**
 
-![img](F:\Typora数据储存\分布式系统\zookeeper.assets\1708987-20190608231015263-1796449651.png)
-
- 
+![img](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5C1708987-20190608231015263-1796449651.png)
 
 上图展示了FastLeaderElection模块是如何与底层网络I/O进行交互的。Leader选举的基本流程如下
 
@@ -328,15 +317,15 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **5、判断选举轮次**。在发送完初始化选票之后，接着开始处理外部投票。在处理外部投票时，会根据选举轮次来进行不同的处理。
 
-- **外部投票的选举轮次大于内部投票**。若服务器自身的选举轮次落后于该外部投票对应服务器的选举轮次，那么就会立即更新自己的选举轮次(logicalclock)，并且清空所有已经收到的投票，然后使用初始化的投票来进行PK以确定是否变更内部投票。最终再将内部投票发送出去。
-- **外部投票的选举轮次小于内部投票**。若服务器接收的外选票的选举轮次落后于自身的选举轮次，那么Zookeeper就会直接忽略该外部投票，不做任何处理，并返回步骤4。
-- **外部投票的选举轮次等于内部投票**。此时可以开始进行选票PK。
+* **外部投票的选举轮次大于内部投票**。若服务器自身的选举轮次落后于该外部投票对应服务器的选举轮次，那么就会立即更新自己的选举轮次(logicalclock)，并且清空所有已经收到的投票，然后使用初始化的投票来进行PK以确定是否变更内部投票。最终再将内部投票发送出去。
+* **外部投票的选举轮次小于内部投票**。若服务器接收的外选票的选举轮次落后于自身的选举轮次，那么Zookeeper就会直接忽略该外部投票，不做任何处理，并返回步骤4。
+* **外部投票的选举轮次等于内部投票**。此时可以开始进行选票PK。
 
 **6、选票PK**。在进行选票PK时，符合任意一个条件就需要变更投票。
 
-- 若外部投票中推举的Leader服务器的选举轮次大于内部投票，那么需要变更投票。
-- 若选举轮次一致，那么就对比两者的ZXID，若外部投票的ZXID大，那么需要变更投票。
-- 若两者的ZXID一致，那么就对比两者的SID，若外部投票的SID大，那么就需要变更投票。
+* 若外部投票中推举的Leader服务器的选举轮次大于内部投票，那么需要变更投票。
+* 若选举轮次一致，那么就对比两者的ZXID，若外部投票的ZXID大，那么需要变更投票。
+* 若两者的ZXID一致，那么就对比两者的SID，若外部投票的SID大，那么就需要变更投票。
 
 **7、变更投票**。经过PK后，若确定了外部投票优于内部投票，那么就变更投票，即使用外部投票的选票信息来覆盖内部投票，变更完成后，再次将这个变更后的内部投票发送出去。
 
@@ -348,17 +337,16 @@ Zookeeper使用的基本时间，服务器之间或客户端与服务器之间�
 
 **以上10个步骤就是FastLeaderElection的核心，其中步骤4-9会经过几轮循环，直到有Leader选举产生**。#
 
-## 节点类型
+### 节点类型
 
 1. 持久化目录节点：客户端与ZK断开连接后，该节点**仍旧存在**
 2. 持久化顺序编号目录节点：与上同并且在节点名称后进行顺序编号
 3. 临时目录节点：客户端与ZK断开连接后，该节点**删除**
-4. 临时顺序编号目录节点：与3同并且在节点名称后进行顺序编号 
+4. 临时顺序编号目录节点：与3同并且在节点名称后进行顺序编号
 
-# 集群安装使用
+## 集群安装使用
 
-``` shell
-
+```shell
 # 启动3个zookeeper服务
 zkServer start /usr/local/etc/zookeeper/zoo1.cfg
 zkServer start /usr/local/etc/zookeeper/zoo2.cfg
@@ -397,11 +385,9 @@ delete /myZnode
 rmr /myZnode
 ```
 
-
-
 zoo.cfg的server配置参数解读
 
-server.A=B:C:D 
+server.A=B:C:D
 
 **A**是一个数字，表示这个是第几号服务器；
 
@@ -413,7 +399,7 @@ server.A=B:C:D
 
 **D**是万一集群中的Leader服务器挂了，需要一个端口来重新进行选举，选出一个新的Leader，而这个端口就是用来执行选举时服务器相互通信的端口。
 
-### Stat 结构体 
+#### Stat 结构体
 
 1）czxid-创建节点的事务zxid
 
@@ -441,7 +427,7 @@ server.A=B:C:D
 
 11）numChildren - znode子节点数量
 
-### 监听器原理
+#### 监听器原理
 
 1. 由zk提供的./zkCli.sh或者spring集成自己实现的Zookeeper类创建客户端（若是spring需要保持main线程别结束，设置如sleep）
 2. 通过connect线程将注册的监听事件发送给zk
@@ -449,9 +435,9 @@ server.A=B:C:D
 4. zk监听到注册的被监听的服务器有数据/路径变化，则将消息发送给listener
 5. Listener线程调用其process()方法
 
-常见的监听器:1)监听节点数据的变化 get path[watch]   2）ls path[watch]
+常见的监听器:1)监听节点数据的变化 get path\[watch] 2）ls path\[watch]
 
-### Spring集成监听器使用流程
+#### Spring集成监听器使用流程
 
 服务器端：
 
@@ -467,21 +453,21 @@ server.A=B:C:D
 
 dubbo使得客户端和服务端只需知道注册中心的地址来消费/注册需要的服务，因为消息会经由不同的中间件加工的资源而来，不同中间件的数据传输有不同的要求，而就需要提供不同的接口给不同的中间件使用，而由ZK去记录具体某个服务与其服务对应的ip位置，并使用负载均衡
 
-# 文件作用
+## 文件作用
 
 1. zkData中myid 是zk服务的ID；version-2是服务保存节点数据等的文件；pid是进程号，zkClient通过这个去寻找服务
 
-# 分布式锁
+## 分布式锁
 
 基本思路：
 
-![image-20210715094417091](F:\Typora数据储存\分布式系统\Zookeeper.assets\image-20210715094417091.png)
+![image-20210715094417091](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5CZookeeper.assets%5Cimage-20210715094417091.png)
 
-## 案例代码实现
+### 案例代码实现
 
 * 先用标签写逻辑，然后分方法块，再具体实现
 
-``` java
+```java
 package com.atguigu.lock2;
 import org.apache.zookeeper.*;
 import org.apache.zookeeper.data.Stat;
@@ -594,9 +580,9 @@ public class DistributedLock {
     } }
 ```
 
-## 测试
+### 测试
 
-``` java
+```java
 package com.atguigu.lock2;
 import org.apache.zookeeper.KeeperException;
 import java.io.IOException;
@@ -640,9 +626,9 @@ public class DistributedLockTest {
     } }
 ```
 
-## **Curator** **框架实现分布式锁案例**
+### **Curator** **框架实现分布式锁案例**
 
-**1****）原生的** **Java API** **开发存在的问题**
+**1**\*\*）原生的\*\* **Java API** **开发存在的问题**
 
 （1）会话连接与后续的操作是异步的，需要自己去处理。比如使用 CountDownLatch
 
@@ -652,15 +638,15 @@ public class DistributedLockTest {
 
 （4）不支持多节点删除和创建。需要自己去递归
 
-**2****）****Curator** **是一个专门解决分布式锁的框架，解决了原生** **JavaAPI** **开发分布式遇到的问题。**
+**2**\*\*）\*\***Curator** **是一个专门解决分布式锁的框架，解决了原生** **JavaAPI** **开发分布式遇到的问题。**
 
 详情请查看官方文档：https://curator.apache.org/index.html
 
-**3****）****Curator** **案例实操**
+**3**\*\*）\*\***Curator** **案例实操**
 
 （1）添加依赖
 
-``` xml
+```xml
 <dependency>
 
  <groupId>org.apache.curator</groupId>
@@ -692,12 +678,9 @@ public class DistributedLockTest {
 </dependency>
 ```
 
-
-
 （2）代码实现
 
-``` java
-
+```java
 import org.apache.curator.RetryPolicy;
 
 import org.apache.curator.framework.CuratorFramework;
@@ -867,11 +850,7 @@ public class CuratorLockTest {
 }
 ```
 
-
-
-
-
-# **企业面试真题（面试重点）**
+## **企业面试真题（面试重点）**
 
 **6.1** **选举机制**
 
@@ -895,12 +874,9 @@ public class CuratorLockTest {
 
 生产经验：
 
-* 10 台服务器：3 台 zk； 
-
-* 20 台服务器：5 台 zk； 
-
-* 100 台服务器：11 台 zk； 
-
+* 10 台服务器：3 台 zk；
+* 20 台服务器：5 台 zk；
+* 100 台服务器：11 台 zk；
 * 200 台服务器：11 台 zk
 
 服务器台数多：好处，提高可靠性；坏处：提高通信延时
@@ -909,9 +885,9 @@ public class CuratorLockTest {
 
 ls、get、create、delete
 
-# Zk算法
+## Zk算法
 
-## 拜占庭将军问题
+### 拜占庭将军问题
 
 拜占庭将军问题是一个协议问题，拜占庭帝国军队的将军们必须全体一致的决定是否攻击某一支敌军。问题是这些将军在地理上是分隔开来的，并且将
 
@@ -923,13 +899,13 @@ ls、get、create、delete
 
 * 该问题的关键是存在消息不一致问题（即数据一致性）
 
-## Paxos算法
+### Paxos算法
 
 Paxos算法是基于**消息传递**且具有**高度容错特性**的**一致性算法**，是目前公认的解决**分布式一致性**问题**最有效**的算法之一。
 
 （这里**某个数据的值**并不只是狭义上的某个数，它可以是一条日志，也可以是一条命令（command）。。。根据应用场景不同，**某个数据的值**有不同的含义。）
 
-![image-20210717162647446](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717162647446.png)
+![image-20210717162647446](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717162647446.png)
 
 Paxos算法描述：
 
@@ -939,30 +915,26 @@ Paxos的目标：保证最终有一个value会被选定，当value被选定后�
 
 Proposer、Acceptor、Learner分别在什么情况下才能认为某个value被选定呢？
 
-- Proposer：只要Proposer发的提案被Acceptor接受（刚开始先认为只需要一个Acceptor接受即可，在推导过程中会发现需要半数以上的Acceptor同意才行），Proposer就认为该提案里的value被选定了。
-- Acceptor：只要Acceptor接受了某个提案，Acceptor就任务该提案里的value被选定了。
-- Learner：Acceptor告诉Learner哪个value被选定，Learner就认为那个value被选定。
+* Proposer：只要Proposer发的提案被Acceptor接受（刚开始先认为只需要一个Acceptor接受即可，在推导过程中会发现需要半数以上的Acceptor同意才行），Proposer就认为该提案里的value被选定了。
+* Acceptor：只要Acceptor接受了某个提案，Acceptor就任务该提案里的value被选定了。
+* Learner：Acceptor告诉Learner哪个value被选定，Learner就认为那个value被选定。
 
-## 推导过程
+### 推导过程
 
 https://www.cnblogs.com/linbingdong/p/6253479.html#!comments
 
-### Proposer生成提案
+#### Proposer生成提案
 
-为了满足P2b，这里有个比较重要的思想：Proposer生成提案之前，应该先去**『学习』**已经被选定或者可能被选定的value，然后以该value作为自己提出的提案的value。如果没有value被选定，Proposer才可以自己决定value的值。这样才能达成一致。这个学习的阶段是通过一个**『Prepare请求』**实现的。
+为了满足P2b，这里有个比较重要的思想：Proposer生成提案之前，应该先去\*\*『学习』**已经被选定或者可能被选定的value，然后以该value作为自己提出的提案的value。如果没有value被选定，Proposer才可以自己决定value的值。这样才能达成一致。这个学习的阶段是通过一个**『Prepare请求』\*\*实现的。
 
 于是我们得到了如下的**提案生成算法**：
 
-1. Proposer选择一个**新的提案编号N**，然后向**某个Acceptor集合**（半数以上）发送请求，要求该集合中的每个Acceptor做出如下响应（response）。
-   (a) 向Proposer承诺保证**不再接受**任何编号**小于N的提案**。
-   (b) 如果Acceptor已经接受过提案，那么就向Proposer响应**已经接受过**的编号小于N的**最大编号的提案**。
+1.  Proposer选择一个**新的提案编号N**，然后向**某个Acceptor集合**（半数以上）发送请求，要求该集合中的每个Acceptor做出如下响应（response）。 (a) 向Proposer承诺保证**不再接受**任何编号**小于N的提案**。 (b) 如果Acceptor已经接受过提案，那么就向Proposer响应**已经接受过**的编号小于N的**最大编号的提案**。
 
-   我们将该请求称为**编号为N**的**Prepare请求**。
+    我们将该请求称为**编号为N**的**Prepare请求**。
+2. 如果Proposer收到了**半数以上**的Acceptor的**响应**，那么它就可以生成编号为N，Value为V的**提案\[N,V]**。这里的V是所有的响应中**编号最大的提案的Value**。如果所有的响应中**都没有提案**，那 么此时V就可以由Proposer**自己选择**。 生成提案后，Proposer将该**提案**发送给**半数以上**的Acceptor集合，并期望这些Acceptor能接受该提案。我们称该请求为**Accept请求**。（注意：此时接受Accept请求的Acceptor集合**不一定**是之前响应Prepare请求的Acceptor集合）
 
-2. 如果Proposer收到了**半数以上**的Acceptor的**响应**，那么它就可以生成编号为N，Value为V的**提案[N,V]**。这里的V是所有的响应中**编号最大的提案的Value**。如果所有的响应中**都没有提案**，那 么此时V就可以由Proposer**自己选择**。
-   生成提案后，Proposer将该**提案**发送给**半数以上**的Acceptor集合，并期望这些Acceptor能接受该提案。我们称该请求为**Accept请求**。（注意：此时接受Accept请求的Acceptor集合**不一定**是之前响应Prepare请求的Acceptor集合）
-
-### Acceptor接受提案
+#### Acceptor接受提案
 
 Acceptor**可以忽略任何请求**（包括Prepare请求和Accept请求）而不用担心破坏算法的**安全性**。因此，我们这里要讨论的是什么时候Acceptor可以响应一个请求。
 
@@ -974,81 +946,80 @@ Acceptor**可以忽略任何请求**（包括Prepare请求和Accept请求）而�
 
 因此，一个Acceptor**只需记住**：1. 已接受的编号最大的提案 2. 已响应的请求的最大编号。
 
-### Paxos算法描述
+#### Paxos算法描述
 
 经过上面的推导，我们总结下Paxos算法的流程。
 
 Paxos算法分为**两个阶段**。具体如下：
 
-- **阶段一：**
+*   **阶段一：**
 
-  (a) Proposer选择一个**提案编号N**，然后向**半数以上**的Acceptor发送编号为N的**Prepare请求**。
+    (a) Proposer选择一个**提案编号N**，然后向**半数以上**的Acceptor发送编号为N的**Prepare请求**。
 
-  (b) 如果一个Acceptor收到一个编号为N的Prepare请求，且N**大于**该Acceptor已经**响应过的**所有**Prepare请求**的编号，那么它就会将它已经**接受过的编号最大的提案（如果有的话）**作为响应反馈给Proposer，同时该Acceptor承诺**不再接受**任何**编号小于N的提案**。
+    (b) 如果一个Acceptor收到一个编号为N的Prepare请求，且N**大于**该Acceptor已经**响应过的**所有**Prepare请求**的编号，那么它就会将它已经**接受过的编号最大的提案（如果有的话）作为响应反馈给Proposer，同时该Acceptor承诺不再接受**任何**编号小于N的提案**。
+*   **阶段二：**
 
-- **阶段二：**
+    (a) 如果Proposer收到**半数以上**Acceptor对其发出的编号为N的Prepare请求的**响应**，那么它就会发送一个针对\*\*\[N,V]提案**的**Accept请求**给**半数以上**的Acceptor。注意：V就是收到的**响应**中**编号最大的提案的value\*\*，如果响应中**不包含任何提案**，那么V就由Proposer**自己决定**。
 
-  (a) 如果Proposer收到**半数以上**Acceptor对其发出的编号为N的Prepare请求的**响应**，那么它就会发送一个针对**[N,V]提案**的**Accept请求**给**半数以上**的Acceptor。注意：V就是收到的**响应**中**编号最大的提案的value**，如果响应中**不包含任何提案**，那么V就由Proposer**自己决定**。
+    (b) 如果Acceptor收到一个针对编号为N的提案的Accept请求，只要该Acceptor**没有**对编号**大于N**的**Prepare请求**做出过**响应**，它就**接受该提案**。
 
-  (b) 如果Acceptor收到一个针对编号为N的提案的Accept请求，只要该Acceptor**没有**对编号**大于N**的**Prepare请求**做出过**响应**，它就**接受该提案**。
+![image-20210717170315426](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717170315426.png)
 
-![image-20210717170315426](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717170315426.png)
+* \==图片中接受时，应是N>=ResN的时候接受，N\<ResN的时候不接受==
 
-* ==图片中接受时，应是N>=ResN的时候接受，N<ResN的时候不接受==
-
-## Paxos算法实践情况
+### Paxos算法实践情况
 
 只有一个proposer提议的proposal的时候：
 
-![image-20210717170703304](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717170703304.png)
+![image-20210717170703304](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717170703304.png)
 
 有多个proposer的时候：每个proposer的proposal都算一个新的acceptN和accepetV，若是acceptN是最新的，也会再Accept时被比较更新
 
-![image-20210717171441925](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717171441925.png)
+![image-20210717171441925](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717171441925.png)
 
 多个proposer在follower为accept时同时竞争
 
-![image-20210717172559700](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717172559700.png)
+![image-20210717172559700](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717172559700.png)
 
-## Learner学习被选定的value
+### Learner学习被选定的value
 
 Learner学习（获取）被选定的value有如下三种方案：
 
-![image-20210717170514867](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717170514867.png)
+![image-20210717170514867](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717170514867.png)
 
-## 如何保证Paxos算法的活性
+### 如何保证Paxos算法的活性
 
-![image-20210717170528362](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210717170528362.png)
+![image-20210717170528362](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210717170528362.png)
 
-## **ZAB** **协议**
+### **ZAB** **协议**
 
 ZAB协议借鉴了Paxos算法，但其只有一个Leader进行proposal的发起，而且增加了算法所需功能的具体实现。
 
-### **Zab** **协议内容**
+#### **Zab** **协议内容**
 
 Zab 协议包括两种基本的模式：**消息广播、崩溃恢复。**
 
 **消息广播**
 
-![image-20210718061812622](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718061812622.png)
+![image-20210718061812622](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718061812622.png)
 
 **崩溃恢复**
 
-![image-20210718061843121](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718061843121.png)
+![image-20210718061843121](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718061843121.png)
 
-![image-20210718061932294](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718061932294.png)
+![image-20210718061932294](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718061932294.png)
 
-Leader**选举：**根据上述要求，Zab协议需要保证选举出来的Leader需要满足以下条件：
+Leader\*\*选举：\*\*根据上述要求，Zab协议需要保证选举出来的Leader需要满足以下条件：
 
 （1）新选举出来的Leader不能包含未提交的Proposal。**即新**Leader**必须都是已经提交了**Proposal**的**Follower**服务器节点**。
 
 （2）**新选举的**Leader**节点中含有最大的**zxid。这样做的好处是可以避免Leader服务器检查Proposal的提交和丢弃工作。
 
-Zab**如何数据同步**： 
+Zab**如何数据同步**：
 
 （1）完成Leader选举后，在正式开始工作之前（接收事务请求，然后提出新的Proposal），Leader**服务器会首先确认事务日**
 
-**志中的所有的**Proposal **是否已经被集群中过半的服务器**Commit**。**
+**志中的所有的**Proposal **是否已经被集群中过半的服务器**Commit\*\*。\*\*
 
 （2）Leader服务器需要确保所有的Follower服务器能够接收到每一条事务的Proposal，并且能将所有已经提交的事务Proposal
 
@@ -1056,31 +1027,29 @@ Zab**如何数据同步**：
 
 Leader才会把该Follower加入到真正可用的Follower列表中。
 
-## **CAP**
+### **CAP**
 
 CAP理论告诉我们，一个分布式系统不可能同时满足以下三种
 
 CAP**理论**
 
-* 一致性（C:Consistency） 
-
-* 可用性（A:Available） 
-
+* 一致性（C:Consistency）
+* 可用性（A:Available）
 * 分区容错性（P:Partition Tolerance）
 
-这三个基本需求，最多只能同时满足其中的两项，因为P是必须的，因此往往选择就在CP或者AP中。 
+这三个基本需求，最多只能同时满足其中的两项，因为P是必须的，因此往往选择就在CP或者AP中。
 
-1**）一致性（**C:Consistency**）**
+1\*\*）一致性（**C:Consistency**）\*\*
 
 在分布式环境中，一致性是指数据在多个副本之间是否能够保持数据一致的特性。在一致性的需求下，当一个系统在数
 
-据一致的状态下执行更新操作后，应该保证系统的数据仍然处于一致的状态。 
+据一致的状态下执行更新操作后，应该保证系统的数据仍然处于一致的状态。
 
-2**）可用性（**A:Available**）**
+2\*\*）可用性（**A:Available**）\*\*
 
-可用性是指系统提供的服务必须一直处于可用的状态，对于用户的每一个操作请求总是能够在有限的时间内返回结果。 
+可用性是指系统提供的服务必须一直处于可用的状态，对于用户的每一个操作请求总是能够在有限的时间内返回结果。
 
-3**）分区容错性（**P:Partition Tolerance**）**
+3\*\*）分区容错性（**P:Partition Tolerance**）\*\*
 
 分布式系统在遇到任何网络分区故障的时候，仍然需要能够保证对外提供满足一致性和可用性的服务，除非是整个网络
 
@@ -1088,53 +1057,52 @@ CAP**理论**
 
 ZooKeeper**保证的是**CP
 
-**（**1**）**ZooKeeper**不能保证每次服务请求的可用性。**（注：在极端环境下，ZooKeeper可能会丢弃一些请求，消费者程序需要
+**（1）ZooKeeper不能保证每次服务请求的可用性。**（注：在极端环境下，ZooKeeper可能会丢弃一些请求，消费者程序需要
 
-重新请求才能获得结果）。所以说，ZooKeeper不能保证服务可用性。 
+重新请求才能获得结果）。所以说，ZooKeeper不能保证服务可用性。
 
-**（**2**）进行**Leader**选举时集群都是不可用。**
+**（2）进行**Leader**选举时集群都是不可用。**
 
-# **持久化源码**
+## **持久化源码**
 
 Leader 和 Follower 中的数据会在内存和磁盘中各保存一份。所以需要将内存中的数据持久化到磁盘中。
 
 在 org.apache.zookeeper.server.persistence 包下的相关类都是序列化相关的代码。
 
-![image-20210718062238310](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062238310.png)
+![image-20210718062238310](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062238310.png)
 
 （1）zk 中的数据模型，是一棵树，DataTree，每个节点，叫做 DataNode
 
 （2）zk 集群中的 DataTree 时刻保持状态同步
 
-（3）Zookeeper 集群中每个 zk 节点中，数据在内存和磁盘中都有一份完整的数据。 
+（3）Zookeeper 集群中每个 zk 节点中，数据在内存和磁盘中都有一份完整的数据。
 
 * 内存数据：DataTree
-
 * 磁盘数据：快照文件 + 编辑日志
 
-# **序列化源码**
+## **序列化源码**
 
-![image-20210718062257349](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062257349.png)
+![image-20210718062257349](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062257349.png)
 
-# **ZK** **服务端环境配置**
+## **ZK** **服务端环境配置**
 
-![image-20210718062319394](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062319394.png)
+![image-20210718062319394](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062319394.png)
 
-# ZK服务端数据初始化
+## ZK服务端数据初始化
 
 一个服务器代表了一个QuorumPeer，在选举后会通过getPeerState（）标记各自的状态，调用对应不同状态的服务如leader和follower类进行监听
 
-![image-20210718062507207](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062507207.png)
+![image-20210718062507207](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062507207.png)
 
-# **ZK** **选举源码解析**
+## **ZK** **选举源码解析**
 
-![image-20210718062925875](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062925875.png)
+![image-20210718062925875](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062925875.png)
 
-![image-20210718062933606](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062933606.png)
+![image-20210718062933606](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062933606.png)
 
-![image-20210718062959716](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718062959716.png)
+![image-20210718062959716](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718062959716.png)
 
-# 选举后Follower和Leader状态同步源码
+## 选举后Follower和Leader状态同步源码
 
 * **这是选举后Follower和Leader的状态同步过程，不同于由Client提出proposal时类似paxos算法的实现过程**
 
@@ -1146,25 +1114,24 @@ Leader 和 Follower 中的数据会在内存和磁盘中各保存一份。所以
 
 （3）COMMIT leader 的 zxid 比 follower 的 zxid 大，发送 Proposal 给 foloower 提交执行
 
-（4）如果 follower 并没有任何数据，直接使用 SNAP 的方式来执行数据同步（直接把数据全部序列到 follower）
-													![image-20210718063139205](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718063139205.png)
+（4）如果 follower 并没有任何数据，直接使用 SNAP 的方式来执行数据同步（直接把数据全部序列到 follower） ![image-20210718063139205](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718063139205.png)
 
-![image-20210718063149522](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718063149522.png)
+![image-20210718063149522](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718063149522.png)
 
-# 服务端Leader的启动
+## 服务端Leader的启动
 
 选举后Leader.lead方法执行的最后会执行startZkServer方法，代表状态同步完成，准备执行其他的请求进行paxos算法流程
 
-![image-20210718063323820](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718063323820.png)
+![image-20210718063323820](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718063323820.png)
 
-# **服务端** **Follower** **启动**
+## **服务端** **Follower** **启动**
 
 选举后followLeader状态同步完成后，调用follower.followLeader()，准备执行其他的请求进行paxos算法流程
 
-![image-20210718063525688](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718063525688.png)
+![image-20210718063525688](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718063525688.png)
 
-# **客户端启动**
+## **客户端启动**
 
 底层也是通过apache的Zookeeper类进行Socket层面的Connection
 
-![image-20210718064236248](F:\Typora数据储存\分布式系统\zookeeper.assets\image-20210718064236248.png)
+![image-20210718064236248](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%5Czookeeper.assets%5Cimage-20210718064236248.png)

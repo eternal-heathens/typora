@@ -1,34 +1,34 @@
-## 特性 
+# mybatisPlus
 
-无侵入：只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑 
+### 特性
 
-损耗小：启动即会自动注入基本 CURD，性能基本无损耗，直接面向对象操作， BaseMapper  
+无侵入：只做增强不做改变，引入它不会对现有工程产生影响，如丝般顺滑
 
-**强大的 CRUD 操作：内置通用 Mapper、通用 Service，仅仅通过少量配置即可实现单表大部分 CRUD 操作，更有强大的条件构造器，满足各类使用需求, 以后简单的CRUD操作，它不用自己编写 了**！ 
+损耗小：启动即会自动注入基本 CURD，性能基本无损耗，直接面向对象操作， BaseMapper
 
-支持 Lambda 形式调用：通过 Lambda 表达式，方便的编写各类查询条件，无需再担心字段写错 
+**强大的 CRUD 操作：内置通用 Mapper、通用 Service，仅仅通过少量配置即可实现单表大部分 CRUD 操作，更有强大的条件构造器，满足各类使用需求, 以后简单的CRUD操作，它不用自己编写 了**！
 
-支持主键自动生成：支持多达 4 种主键策略（内含分布式唯一 ID 生成器 - Sequence），可自由配 置，完美解决主键问题 
+支持 Lambda 形式调用：通过 Lambda 表达式，方便的编写各类查询条件，无需再担心字段写错
 
-支持 ActiveRecord 模式：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可进行强大 的 CRUD 操作 
+支持主键自动生成：支持多达 4 种主键策略（内含分布式唯一 ID 生成器 - Sequence），可自由配 置，完美解决主键问题
 
-支持自定义全局通用操作：支持全局通用方法注入（ Write once, use anywhere ） 
+支持 ActiveRecord 模式：支持 ActiveRecord 形式调用，实体类只需继承 Model 类即可进行强大 的 CRUD 操作
 
-**内置代码生成器：采用代码或者 Maven 插件可快速生成 Mapper 、 Model 、 Service 、 Controller 层代码，支持模板引擎，更有超多自定义配置等您来使用（自动帮你生成代码） **
+支持自定义全局通用操作：支持全局通用方法注入（ Write once, use anywhere ）
+
+\*\*内置代码生成器：采用代码或者 Maven 插件可快速生成 Mapper 、 Model 、 Service 、 Controller 层代码，支持模板引擎，更有超多自定义配置等您来使用（自动帮你生成代码） \*\*
 
 **内置分页插件：基于 MyBatis 物理分页，开发者无需关心具体操作，配置好插件之后，写分页等同 于普通 List 查询 分页插件支持多种数据库：**
 
-支持 MySQL、MariaDB、Oracle、DB2、H2、HSQL、SQLite、 Postgre、SQLServer 等多种数据库 
+支持 MySQL、MariaDB、Oracle、DB2、H2、HSQL、SQLite、 Postgre、SQLServer 等多种数据库
 
-内置性能分析插件：可输出 Sql 语句以及其执行时间，建议开发测试时启用该功能，能快速揪出慢 查询 
+内置性能分析插件：可输出 Sql 语句以及其执行时间，建议开发测试时启用该功能，能快速揪出慢 查询
 
 内置全局拦截插件：提供全表 delete 、 update 操作智能分析阻断，也可自定义拦截规则，预防误
 
-**id, gmt_create, gmt_modified。
-说明：其中 id 必为主键，类型为 unsigned bigint、单表时自增、步长为 1。**
+**id, gmt\_create, gmt\_modified。 说明：其中 id 必为主键，类型为 unsigned bigint、单表时自增、步长为 1。**
 
-**gmt_create,gmt_modified 的类型均为 date_time 类型，前者现在时表示主动创建，后者过去分词表示被
-动更新。**
+**gmt\_create,gmt\_modified 的类型均为 date\_time 类型，前者现在时表示主动创建，后者过去分词表示被 动更新。**
 
 eg：
 
@@ -43,19 +43,17 @@ create table `test`(
 on update current_timestamp 有数据更改时自动记录修改时间，记录的是修改的时间，不是提交的时间，不能用来做同步
 ```
 
+### 项目构建
 
-
-## 项目构建
-
-#### 初始化项目
+**初始化项目**
 
 创建一个空的 Spring Boot 工程（工程将以 H2 作为默认数据库进行演示）
 
-1.  创建数据库 mybatis_plus
+1. 创建数据库 mybatis\_plus
 2. 创建user表
-3. 可以使用 [Spring Initializer](https://start.spring.io/) 快速初始化一个 Spring Boot 工程
+3. 可以使用 [Spring Initializer](https://start.spring.io) 快速初始化一个 Spring Boot 工程
 
- 4、导入依赖
+4、导入依赖
 
 ```
 <!-- 数据库驱动 -->
@@ -92,9 +90,9 @@ useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
-6、传统方式pojo-dao（连接mybatis，配置mapper.xml文件）-service-controller 
+6、传统方式pojo-dao（连接mybatis，配置mapper.xml文件）-service-controller
 
-​		用了mybatis-plus 之后
+​ 用了mybatis-plus 之后
 
 * pojo
 
@@ -146,33 +144,33 @@ users.forEach(System.out::println);
 }
 ```
 
-#### 配置日志
+**配置日志**
 
 ```
 mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl  //控制台基本的日志
 ```
 
-## CRUD
+### CRUD
 
-#### service CRUD接口和Mapper CRUD 接口
+**service CRUD接口和Mapper CRUD 接口**
 
-[https://mp.baomidou.com/guide/crud-interface.html#mapper-%E5%B1%82-%E9%80%89%E8%A3%85%E4%BB%B6](https://mp.baomidou.com/guide/crud-interface.html#mapper-层-选装件)
+[https://mp.baomidou.com/guide/crud-interface.html#mapper-%E5%B1%82-%E9%80%89%E8%A3%85%E4%BB%B6](https://mp.baomidou.com/guide/crud-interface.html#mapper-%E5%B1%82-%E9%80%89%E8%A3%85%E4%BB%B6)
 
-###### Service CRUD 接口
+**Service CRUD 接口**
 
-- 通用 Service CRUD 封装[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java)接口，进一步封装 CRUD 采用 `get 查询单行` `remove 删除` `list 查询集合` `page 分页` 前缀命名方式区分 `Mapper` 层避免混淆，
-- 泛型 `T` 为任意实体对象
-- 建议如果存在自定义通用 Service 方法的可能，请创建自己的 `IBaseService` 继承 `Mybatis-Plus` 提供的基类
-- 对象 `Wrapper` 为 [条件构造器](https://github.com/baomidou/mybatis-plus-doc/blob/master/guide/wrapper.html) 
+* 通用 Service CRUD 封装[IService](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-extension/src/main/java/com/baomidou/mybatisplus/extension/service/IService.java)接口，进一步封装 CRUD 采用 `get 查询单行` `remove 删除` `list 查询集合` `page 分页` 前缀命名方式区分 `Mapper` 层避免混淆，
+* 泛型 `T` 为任意实体对象
+* 建议如果存在自定义通用 Service 方法的可能，请创建自己的 `IBaseService` 继承 `Mybatis-Plus` 提供的基类
+* 对象 `Wrapper` 为 [条件构造器](https://github.com/baomidou/mybatis-plus-doc/blob/master/guide/wrapper.html)
 
 > Save、Update、Get、List、Page、Count、Chain
 
-###### Mapper CRUD 接口
+**Mapper CRUD 接口**
 
-- 通用 CRUD 封装[BaseMapper](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/mapper/BaseMapper.java)接口，为 `Mybatis-Plus` 启动时自动解析实体表关系映射转换为 `Mybatis` 内部对象注入容器
-- 泛型 `T` 为任意实体对象
-- 参数 `Serializable` 为任意类型主键 `Mybatis-Plus` 不推荐使用复合主键约定每一张表都有自己的唯一 `id` 主键
-- 对象 `Wrapper` 为 [条件构造器](https://github.com/baomidou/mybatis-plus-doc/blob/master/guide/wrapper.html)
+* 通用 CRUD 封装[BaseMapper](https://gitee.com/baomidou/mybatis-plus/blob/3.0/mybatis-plus-core/src/main/java/com/baomidou/mybatisplus/core/mapper/BaseMapper.java)接口，为 `Mybatis-Plus` 启动时自动解析实体表关系映射转换为 `Mybatis` 内部对象注入容器
+* 泛型 `T` 为任意实体对象
+* 参数 `Serializable` 为任意类型主键 `Mybatis-Plus` 不推荐使用复合主键约定每一张表都有自己的唯一 `id` 主键
+* 对象 `Wrapper` 为 [条件构造器](https://github.com/baomidou/mybatis-plus-doc/blob/master/guide/wrapper.html)
 
 > Insert、Delete、Update、Select
 
@@ -193,9 +191,9 @@ public void testInsert(){
 }
 ```
 
-![image-20200731132404211](F:\Typora数据储存\数据库\mybatisPlus.assets\image-20200731132404211.png)
+![image-20200731132404211](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5CmybatisPlus.assets%5Cimage-20200731132404211.png)
 
-#### 主键生成策略
+**主键生成策略**
 
 **1. 数据库自增长序列或字段**
 
@@ -206,8 +204,6 @@ public void testInsert(){
 1）简单，代码方便，性能可以接受。
 
 2）数字ID天然排序，对分页或者需要排序的结果很有帮助。
-
- 
 
 缺点：
 
@@ -225,8 +221,6 @@ public void testInsert(){
 
 1）针对主库单点，如果有多个Master库，则每个Master库设置的起始数字不一样，步长一样，可以是Master的个数。比如：Master1 生成的是 1，4，7，10，Master2生成的是2,5,8,11 Master3生成的是 3,6,9,12。这样就可以有效生成集群中的唯一ID，也可以大大降低ID生成数据库操作的负载。
 
- 
-
 **2. UUID**
 
 常见的方式。可以利用数据库也可以利用程序生成，一般来说全球唯一。
@@ -238,8 +232,6 @@ public void testInsert(){
 2）生成ID性能非常好，基本不会有性能问题。
 
 3）全球唯一，在遇见数据迁移，系统数据合并，或者数据库变更等情况下，可以从容应对。
-
- 
 
 缺点：
 
@@ -253,9 +245,9 @@ public void testInsert(){
 
 5）不可读。
 
- UUID
+UUID
 
-[UUID(Universally Unique IDentifier)](https://en.wikipedia.org/wiki/Universally_unique_identifier)是一个128位数字的唯一标识。[RFC 4122](https://tools.ietf.org/html/rfc4122)描述了具体的规范实现。本文尝试从它的结构一步步分析为什么它能做到唯一性？及各个版本的使用场景。
+[UUID(Universally Unique IDentifier)](https://en.wikipedia.org/wiki/Universally\_unique\_identifier)是一个128位数字的唯一标识。[RFC 4122](https://tools.ietf.org/html/rfc4122)描述了具体的规范实现。本文尝试从它的结构一步步分析为什么它能做到唯一性？及各个版本的使用场景。
 
 **Format**
 
@@ -268,9 +260,9 @@ xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
 
 M中使用4位来表示UUID的版本，N中使用1-3位表示不同的variant。如上面所示：M =1, N = a表示此UUID为version-1，variant-1的UUID(Time-based ECE/RFC 4122 UUID)。
 
-但是为什么最开始说它是一个128位的唯一标识呢？这里明明字母位数是(8+4+4+4+12)*8=256位。
+但是为什么最开始说它是一个128位的唯一标识呢？这里明明字母位数是(8+4+4+4+12)\*8=256位。
 
-因为上面的字母是用的16进制，一个16进制只代表4个bit，所以应该是(8+4+4+4+12)*4=128位。
+因为上面的字母是用的16进制，一个16进制只代表4个bit，所以应该是(8+4+4+4+12)\*4=128位。
 
 UUID使用的是大数位format([big-endian](https://en.wikipedia.org/wiki/Endianness#Big))，比如：
 
@@ -295,11 +287,11 @@ uuid -n 5 -v1
 
 肉眼一看，有一种所有的UUID都很相似的感觉，几乎就要重复了！怎么回事？
 
-其实v1为了保证唯一性，当时间精度不够时，会使用13~14位的clock sequence来扩展时间戳，比如：
+其实v1为了保证唯一性，当时间精度不够时，会使用13\~14位的clock sequence来扩展时间戳，比如：
 
 当UUID的生产成速率太快，超过了系统时间的精度。时间戳的低位部分会每增加一个UUID就+1的操作来模拟更高精度的时间戳，换句话说，就是当系统时间精度无法区分2个UUID的时间先后顺序时，为了保证唯一性，会在其中一个UUID上+1。所以UUID重复的概率几乎为0，时间戳加扩展的clock sequence一共有74bits,(2的74次方，约为1.8后面加22个零),即在每个节点下，每秒可产生1630亿不重复的UUID(因为只精确到了秒,不再是74位，所以换算了一下)。
 
-相对于其它版本，v1还加入48位的MAC地址，这依赖于网卡供应商能提供唯一的MAC地址，同时也可能通过它反查到对应的MAC地址。[Melissa](https://en.wikipedia.org/wiki/Melissa_(computer_virus))病毒就是这样做到的。
+相对于其它版本，v1还加入48位的MAC地址，这依赖于网卡供应商能提供唯一的MAC地址，同时也可能通过它反查到对应的MAC地址。[Melissa](https://en.wikipedia.org/wiki/Melissa\_\(computer\_virus\))病毒就是这样做到的。
 
 **V2(date-time Mac address)**
 
@@ -325,7 +317,7 @@ uuid -n 3 -v3 ns:URL http://www.baidu.com
 1. 把namespace和输入参数拼接在一起，如”http/wwwbaidu.com” ++ “/query=uuid”；
 2. 使用MD5算法对拼接后的字串进行hash，截断为128位；
 3. 把UUID的Version和variant字段都替换成固定的;
-4. 如果需要to_string，需要转为16进制和加上连接符”-“。
+4. 如果需要to\_string，需要转为16进制和加上连接符”-“。
 
 把V3的hash算法由MD5换成SHA-1就成了V5。
 
@@ -350,25 +342,22 @@ def539e8-d298-4575-b769-b55d7637b51e
 
 **Summary**
 
-1. 如果只是需要生成一个唯一ID,你可以使用V1或V4。
+1.  如果只是需要生成一个唯一ID,你可以使用V1或V4。
 
-   ```
-   V1基于时间戳和Mac地址,这些ID有一定的规律(你给出一个，是有可能被猜出来下一个是多少的)，而且会暴露你的Mac地址。
-   V4是完全随机(伪)的。
-   ```
+    ```
+    V1基于时间戳和Mac地址,这些ID有一定的规律(你给出一个，是有可能被猜出来下一个是多少的)，而且会暴露你的Mac地址。
+    V4是完全随机(伪)的。
+    ```
+2.  如果对于相同的参数需要输出相同的UUID,你可以使用V3或V5。
 
-2. 如果对于相同的参数需要输出相同的UUID,你可以使用V3或V5。
-
-   ```
-   V3基于MD5 hash算法，如果需要考虑与其它系统的兼容性的话，就用它,因为它出来得早，大概率大家都是用它的。
-   V5基于SHA-1 hash算法，这个是首选。
-   ```
+    ```
+    V3基于MD5 hash算法，如果需要考虑与其它系统的兼容性的话，就用它,因为它出来得早，大概率大家都是用它的。
+    V5基于SHA-1 hash算法，这个是首选。
+    ```
 
 **3. UUID的变种**
 
 1）为了解决UUID不可读，可以使用UUID to Int64的方法。及
-
-
 
 ```
 /// <summary>
@@ -422,7 +411,7 @@ private Guid GenerateComb()
 
 用上面的算法测试一下，得到如下的结果：作为比较，前面3个是使用COMB算法得出的结果，最后12个字符串是时间序（统一毫秒生成的3个UUID），过段时间如果再次生成，则12个字符串会比图示的要大。后面3个是直接生成的GUID。
 
-[![ODX}_`4N5X$F93OAS~`8Z)C](https://images2015.cnblogs.com/blog/15700/201602/15700-20160227213048721-177386520.png)](http://images2015.cnblogs.com/blog/15700/201602/15700-20160227213048174-1443183768.png)
+[![ODX}\_4N5X$F93OAS\~8Z)C](https://images2015.cnblogs.com/blog/15700/201602/15700-20160227213048721-177386520.png)](http://images2015.cnblogs.com/blog/15700/201602/15700-20160227213048174-1443183768.png)
 
 如果想把时间序放在前面，可以生成后改变12个字符串的位置，也可以修改算法类的最后两个Array.Copy。
 
@@ -446,8 +435,6 @@ E：5,10,15,20,25
 
 另外，比较适合使用Redis来生成每天从0开始的流水号。比如订单号=日期+当日自增长号。可以每天在Redis中生成一个Key，使用INCR进行累加。
 
- 
-
 优点：
 
 1）不依赖于数据库，灵活方便，且性能优于数据库。
@@ -460,15 +447,11 @@ E：5,10,15,20,25
 
 2）需要编码和配置的工作量比较大。
 
- 
-
 **5. Twitter的snowflake算法**
 
 snowflake是Twitter开源的分布式ID生成算法，结果是一个long型的ID。其核心思想是：使用41bit作为毫秒数，10bit作为机器的ID（5个bit是数据中心，5个bit的机器ID），12bit作为毫秒内的流水号（意味着每个节点在每毫秒可以产生 4096 个 ID），最后还有一个符号位，永远是0。具体实现的代码可以参看https://github.com/twitter/snowflake。
 
 C#代码如下：
-
-
 
 ```
 /// <summary>
@@ -618,11 +601,7 @@ snowflake算法可以根据自身项目的需要进行一定的修改。比如�
 
 1）在单机上是递增的，但是由于涉及到分布式环境，每台机器上的时钟不可能完全同步，也许有时候也会出现不是全局递增的情况。
 
- 
-
 **6. 利用zookeeper生成唯一ID**
-
- 
 
 ```
 zookeeper主要通过其znode数据版本来生成序列号，可以生成32位和64位的数据版本号，客户端可以使用这个版本号来作为唯一的序列号。
@@ -634,81 +613,74 @@ MongoDB的ObjectId和snowflake算法类似。它设计成轻量型的，不同�
 
 其格式如下：
 
-![img](http://images.blogjava.net/blogjava_net/dongbule/46046/o_111.PNG)
+![img](http://images.blogjava.net/blogjava\_net/dongbule/46046/o\_111.PNG)
 
- 
-
-前4 个字节是从标准纪元开始的时间戳，单位为秒。时间戳，与随后的5 个字节组合起来，提供了秒级别的唯一性。由于时间戳在前，这意味着ObjectId 大致会按照插入的顺序排列。这对于某些方面很有用，如将其作为索引提高效率。这4 个字节也隐含了文档创建的时间。绝大多数客户端类库都会公开一个方法从ObjectId 获取这个信息。
-接下来的3 字节是所在主机的唯一标识符。通常是机器主机名的散列值。这样就可以确保不同主机生成不同的ObjectId，不产生冲突。
-为了确保在同一台机器上并发的多个进程产生的ObjectId 是唯一的，接下来的两字节来自产生ObjectId 的进程标识符（PID）。
-前9 字节保证了同一秒钟不同机器不同进程产生的ObjectId 是唯一的。后3 字节就是一个自动增加的计数器，确保相同进程同一秒产生的ObjectId 也是不一样的。同一秒钟最多允许每个进程拥有2563（16 777 216）个不同的ObjectId。
+前4 个字节是从标准纪元开始的时间戳，单位为秒。时间戳，与随后的5 个字节组合起来，提供了秒级别的唯一性。由于时间戳在前，这意味着ObjectId 大致会按照插入的顺序排列。这对于某些方面很有用，如将其作为索引提高效率。这4 个字节也隐含了文档创建的时间。绝大多数客户端类库都会公开一个方法从ObjectId 获取这个信息。 接下来的3 字节是所在主机的唯一标识符。通常是机器主机名的散列值。这样就可以确保不同主机生成不同的ObjectId，不产生冲突。 为了确保在同一台机器上并发的多个进程产生的ObjectId 是唯一的，接下来的两字节来自产生ObjectId 的进程标识符（PID）。 前9 字节保证了同一秒钟不同机器不同进程产生的ObjectId 是唯一的。后3 字节就是一个自动增加的计数器，确保相同进程同一秒产生的ObjectId 也是不一样的。同一秒钟最多允许每个进程拥有2563（16 777 216）个不同的ObjectId。
 
 实现的源码可以到MongoDB官方网站下载。
 
-#### sequence
+**sequence**
 
 * oracle等一些数据库没有如mysql像ID这种的可以设置自增的字段，所有需要通过专门设置一个值来自增，一般有两个用途：
 
-> 一：作为代理主键，唯一识别；ID = sequence_name.nextval 这种操作
+> 一：作为代理主键，唯一识别；ID = sequence\_name.nextval 这种操作
 >
-> 二：用于记录数据库中最新动作的语句，只要语句有动作(I/U/D等)，sequence号都会随着更新，每有IUD就sequence_name+1，配合日志，我们就可以根据sequence号来select出更新的语句。
+> 二：用于记录数据库中最新动作的语句，只要语句有动作(I/U/D等)，sequence号都会随着更新，每有IUD就sequence\_name+1，配合日志，我们就可以根据sequence号来select出更新的语句。
 
-1. **Mybatis-Plus** 已经定义好了常见的数据库主键序列，我们首先只需要在 **@Configuration** 类中定义好 **@Bean**：
+1.  **Mybatis-Plus** 已经定义好了常见的数据库主键序列，我们首先只需要在 **@Configuration** 类中定义好 **@Bean**：
 
-   > **Mybatis-Plus** 内置了如下数据库主键序列（如果内置支持不满足你的需求，可实现 接口来进行扩展）：
-   >
-   > - **DB2KeyGenerator**
-   > - **H2KeyGenerator**
-   > - **KingbaseKeyGenerator**
-   > - **OracleKeyGenerator**
-   > - **PostgreKeyGenerator**
+    > **Mybatis-Plus** 内置了如下数据库主键序列（如果内置支持不满足你的需求，可实现 接口来进行扩展）：
+    >
+    > * **DB2KeyGenerator**
+    > * **H2KeyGenerator**
+    > * **KingbaseKeyGenerator**
+    > * **OracleKeyGenerator**
+    > * **PostgreKeyGenerator**
 
-   ```java
-   @Bean
-   public OracleKeyGenerator oracleKeyGenerator(){
-       return new OracleKeyGenerator();
-   }
-   1234
-   ```
+    ```java
+    @Bean
+    public OracleKeyGenerator oracleKeyGenerator(){
+        return new OracleKeyGenerator();
+    }
+    1234
+    ```
+2.  然后实体类配置主键 **Sequence**，指定主键策略为 **IdType.INPUT** 即可：
 
-2. 然后实体类配置主键 **Sequence**，指定主键策略为 **IdType.INPUT** 即可：
+    > **提示**：支持父类定义 **@KeySequence** 子类使用，这样就可以几个表共用一个 **Sequence**
 
-   > **提示**：支持父类定义 **@KeySequence** 子类使用，这样就可以几个表共用一个 **Sequence**
+    ```java
+    @TableName("TEST_SEQUSER")
+    @KeySequence("SEQ_TEST")//类注解
+    public class TestSequser{
+      @TableId(value = "ID", type = IdType.INPUT)
+      private Long id;
+    }
+    123456
+    ```
+3.  如果主键是 **String** 类型的，也可以使用：
 
-   ```java
-   @TableName("TEST_SEQUSER")
-   @KeySequence("SEQ_TEST")//类注解
-   public class TestSequser{
-     @TableId(value = "ID", type = IdType.INPUT)
-     private Long id;
-   }
-   123456
-   ```
+    > 如何使用 **Sequence** **String** **varchar2** **sequence** 作为主键，但是实体主键类型是 也就是说，表的主键是 ，但是需要从中取值
+    >
+    > * 实体定义 @KeySequence 注解 clazz 指定类型 String.class
+    > * 实体定义主键的类型 String
+    > * 注意：oracle 的 sequence 返回的是 Long 类型，如果主键类型是 Integer，可能会引起 ClassCastException
 
-3. 如果主键是 **String** 类型的，也可以使用：
+    ```java
+    @KeySequence(value = "SEQ_ORACLE_STRING_KEY", clazz = String.class)
+    public class YourEntity{
+        @TableId(value = "ID_STR", type = IdType.INPUT)
+        private String idStr;
+    }
+    ```
 
-   > 如何使用 **Sequence** **String** **varchar2** **sequence** 作为主键，但是实体主键类型是 也就是说，表的主键是 ，但是需要从中取值
-   >
-   > - 实体定义 @KeySequence 注解 clazz 指定类型 String.class
-   > - 实体定义主键的类型 String
-   > - 注意：oracle 的 sequence 返回的是 Long 类型，如果主键类型是 Integer，可能会引起 ClassCastException
-
-   ```java
-   @KeySequence(value = "SEQ_ORACLE_STRING_KEY", clazz = String.class)
-   public class YourEntity{
-       @TableId(value = "ID_STR", type = IdType.INPUT)
-       private String idStr;
-   }
-   ```
-
-#### IdType
+**IdType**
 
 * mybatis-PLUS默认实现的是雪花算法，若需要换成自增
 
 1. 实体类字段上 @TableId(type = IdType.AUTO)
 2. 数据库字段一定要是自增！
 
-*  @TableId关键字说明
+* @TableId关键字说明
 
 ```
 public enum IdType {
@@ -739,7 +711,7 @@ public enum IdType {
 }
 ```
 
-#### 更新
+**更新**
 
 ```
 @Test
@@ -757,11 +729,11 @@ public void testUpdate(){
 }
 ```
 
-#### 自动填充
+**自动填充**
 
 > 方式一：数据库级别
 
-1、在表中新增字段 create_time, update_time
+1、在表中新增字段 create\_time, update\_time
 
 阿里开发手册数据库必备：
 
@@ -776,7 +748,7 @@ create table `test`(
 
 或者可视化操作
 
-![image-20200731203010880](F:\Typora数据储存\数据库\mybatisPlus.assets\image-20200731203010880.png)
+![image-20200731203010880](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5CmybatisPlus.assets%5Cimage-20200731203010880.png)
 
 2、再次测试插入方法，我们需要先把实体类同步！
 
@@ -791,7 +763,7 @@ private Date updateTime;
 
 1、删除数据库的默认值、更新操作！
 
-![image-20200731203223163](F:\Typora数据储存\数据库\mybatisPlus.assets\image-20200731203223163.png)
+![image-20200731203223163](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5CmybatisPlus.assets%5Cimage-20200731203223163.png)
 
 2、实体类字段属性上需要增加注解
 
@@ -824,9 +796,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 }
 ```
 
-#### 乐观锁插件
+**乐观锁插件**
 
-#### 主要适用场景
+**主要适用场景**
 
 意图：
 
@@ -834,10 +806,10 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
 乐观锁实现方式：
 
-- 取出记录时，获取当前version
-- 更新时，带上这个version
-- 执行更新时， set version = newVersion where version = oldVersion
-- 如果version不对，就更新失败
+* 取出记录时，获取当前version
+* 更新时，带上这个version
+* 执行更新时， set version = newVersion where version = oldVersion
+* 如果version不对，就更新失败
 
 **乐观锁配置需要2步 记得两步**
 
@@ -867,13 +839,13 @@ private Integer version;
 
 特别说明:
 
-- **支持的数据类型只有:int,Integer,long,Long,Date,Timestamp,LocalDateTime**
-- 整数类型下 `newVersion = oldVersion + 1`
-- `newVersion` 会回写到 `entity` 中
-- 仅支持 `updateById(id)` 与 `update(entity, wrapper)` 方法
-- **在 `update(entity, wrapper)` 方法下, `wrapper` 不能复用!!!**
+* **支持的数据类型只有:int,Integer,long,Long,Date,Timestamp,LocalDateTime**
+* 整数类型下 `newVersion = oldVersion + 1`
+* `newVersion` 会回写到 `entity` 中
+* 仅支持 `updateById(id)` 与 `update(entity, wrapper)` 方法
+* **在 `update(entity, wrapper)` 方法下, `wrapper` 不能复用!!!**
 
-#### Select
+**Select**
 
 ```
 // 测试查询
@@ -900,13 +872,13 @@ users.forEach(System.out::println);
 }
 ```
 
-#### 分页查询
+**分页查询**
 
 1、原始的 limit 进行分页
 
- 2、pageHelper 第三方插件
+2、pageHelper 第三方插件
 
- 3、MP 其实也内置了分页插件！
+3、MP 其实也内置了分页插件！
 
 配置：
 
@@ -966,7 +938,7 @@ System.out.println(page.getTotal());
 }
 ```
 
-#### 删除操作
+**删除操作**
 
 1、根据 id 删除记录
 
@@ -991,10 +963,9 @@ userMapper.deleteByMap(map);
 }
 ```
 
-2. 逻辑删除
+1. 逻辑删除
 
-* 物理删除 ：从数据库中直接移除 
-
+* 物理删除 ：从数据库中直接移除
 * 逻辑删除 ：再数据库中没有被移除，而是通过一个变量来让他失效！ deleted = 0 => deleted = 1
 * mybatis-plus 在将属性设定为逻辑删除属性后，删除和select语句会**自动注入deleted = 0在sql语句后面**
 
@@ -1002,25 +973,25 @@ userMapper.deleteByMap(map);
 >
 > 只对自动注入的sql起效:
 >
-> - 插入: 不作限制
-> - 查找: 追加where条件过滤掉已删除数据,且使用 wrapper.entity 生成的where条件会忽略该字段
-> - 更新: 追加where条件防止更新到已删除数据,且使用 wrapper.entity 生成的where条件会忽略该字段
-> - 删除: 转变为 更新
+> * 插入: 不作限制
+> * 查找: 追加where条件过滤掉已删除数据,且使用 wrapper.entity 生成的where条件会忽略该字段
+> * 更新: 追加where条件防止更新到已删除数据,且使用 wrapper.entity 生成的where条件会忽略该字段
+> * 删除: 转变为 更新
 >
 > 例如:
 >
-> - 删除: `update user set deleted=1 where id = 1 and deleted=0`
-> - 查找: `select id,name,deleted from user where deleted=0`
+> * 删除: `update user set deleted=1 where id = 1 and deleted=0`
+> * 查找: `select id,name,deleted from user where deleted=0`
 >
 > 字段类型支持说明:
 >
-> - 支持所有数据类型(推荐使用 `Integer`,`Boolean`,`LocalDateTime`)
-> - 如果数据库字段使用`datetime`,逻辑未删除值和已删除值支持配置为字符串`null`,另一个值支持配置为函数来获取值如`now()`
+> * 支持所有数据类型(推荐使用 `Integer`,`Boolean`,`LocalDateTime`)
+> * 如果数据库字段使用`datetime`,逻辑未删除值和已删除值支持配置为字符串`null`,另一个值支持配置为函数来获取值如`now()`
 >
 > 附录:
 >
-> - 逻辑删除是为了方便数据恢复和保护数据本身价值等等的一种方案，但实际就是删除。
-> - 如果你需要频繁查出来看就不应使用逻辑删除，而是以一个状态去表示。
+> * 逻辑删除是为了方便数据恢复和保护数据本身价值等等的一种方案，但实际就是删除。
+> * 如果你需要频繁查出来看就不应使用逻辑删除，而是以一个状态去表示。
 
 * 使用方法
 * 步骤1: 配置`com.baomidou.mybatisplus.core.config.GlobalConfig$DbConfig`
@@ -1047,13 +1018,15 @@ mybatis-plus.global-config.db-config.logic-not-delete-value=0
 private Integer deleted;
 ```
 
-## 性能分享插件
+### 性能分享插件
 
- 	我们在平时的开发中，会遇到一些慢sql。测试！ druid,,,,, 
+```
+我们在平时的开发中，会遇到一些慢sql。测试！ druid,,,,, 
+```
 
 作用：性能分析拦截器，用于输出每条 SQL 语句及其执行时间 MP也提供性能分析插件，如果超过这个时间就停止运行！
 
- 1、导入插件(记住，要在SpringBoot中配置环境为dev或者 test 环境！)
+1、导入插件(记住，要在SpringBoot中配置环境为dev或者 test 环境！)
 
 ```
 /**
@@ -1071,17 +1044,15 @@ return performanceInterceptor;
 }
 ```
 
-![image-20200801110504880](F:\Typora数据储存\数据库\mybatisPlus.assets\image-20200801110504880.png)
+![image-20200801110504880](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5CmybatisPlus.assets%5Cimage-20200801110504880.png)
 
-## 条件构造器
+### 条件构造器
 
-QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类
-**用于生成 sql 的 where 条件**, entity 属性也用于生成 sql 的 where 条件
-注意: entity 生成的 where 条件与 使用各个 api 生成的 where 条件**没有任何关联行为**
+QueryWrapper(LambdaQueryWrapper) 和 UpdateWrapper(LambdaUpdateWrapper) 的父类 **用于生成 sql 的 where 条件**, entity 属性也用于生成 sql 的 where 条件 注意: entity 生成的 where 条件与 使用各个 api 生成的 where 条件**没有任何关联行为**
 
-![image-20200801154305608](F:\Typora数据储存\数据库\mybatisPlus.assets\image-20200801154305608.png)
+![image-20200801154305608](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5CmybatisPlus.assets%5Cimage-20200801154305608.png)
 
-## 代码生成器
+### 代码生成器
 
 dao、pojo、service、controller都给我自己去编写完成！ AutoGenerator 是 MyBatis-Plus 的代码生成器，通过 AutoGenerator 可以快速生成 Entity、 Mapper、Mapper XML、Service、Controller 等各个模块的代码，极大的提升了开发效率。
 
@@ -1161,4 +1132,3 @@ mpg.execute(); //执行
 }
 }
 ```
-
