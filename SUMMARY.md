@@ -22,6 +22,7 @@
   * [消息队列了解](中间件/消息队列了解.md)
   * [test](zhong-jian-jian/test/README.md)
     * [Page 3](zhong-jian-jian/test/page-3.md)
+    * [Page 4](zhong-jian-jian/test/aa.md)
 * [云计算](yun-ji-suan/README.md)
   * [Daas、IaaS、PaaS和SaaS](云计算/Daas、IaaS、PaaS和SaaS.md)
 * [传输数据](chuan-shu-shu-ju/README.md)
@@ -81,7 +82,7 @@
   * [适配器模式](设计模式/适配器模式.md)
   * [Spring框架中的设计模式](设计模式/设计模式简介.md)
   * [什么是观察者](设计模式/观察者模式.md)
-* [集成部署]
+* 集成部署
   * [CI与CD](集成部署/CI与CD.md)
   * [三种发版模式](集成部署/三种发版模式.md)
 * [项目管理框架](xiang-mu-guan-li-kuang-jia/README.md)
