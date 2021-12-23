@@ -20,6 +20,8 @@
   * [Redis](中间件/Redis.md)
   * [docker](中间件/docker.md)
   * [消息队列了解](中间件/消息队列了解.md)
+  * [test](zhong-jian-jian/test/README.md)
+    * [Page 3](zhong-jian-jian/test/page-3.md)
 * [云计算](yun-ji-suan/README.md)
   * [Daas、IaaS、PaaS和SaaS](云计算/Daas、IaaS、PaaS和SaaS.md)
 * [传输数据](chuan-shu-shu-ju/README.md)
