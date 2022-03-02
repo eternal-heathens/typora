@@ -187,7 +187,7 @@ B+树
 
 目前大部分数据库系统及文件系统都采用\*\*B-Tree(B树)**或其变种**B+Tree(B+树)\*\*作为索引结构。B+Tree是数据库系统实现索引的首选数据结构。在MySQL中,索引属于存储引擎级别的概念,不同存储引擎对索引的实现方式是不同的,本文主要讨论MyISAM和InnoDB两个存储引擎的索引实现方式。MyISAM索引实现MyISAM引擎使用B+Tree作为索引结构,叶节点的data域存放的是数据记录的地址。下图是MyISAM索引的原理图:image.png这里设表一共有三列,假设我
 
-​ 在 MySQL 中,索引属于存储引擎级别的概念,不同存储引擎对索引的实现方式是不同的,本文主要讨论 MyISAM 和 InnoDB 两个存储引擎的索引实现方式。
+ 在 MySQL 中,索引属于存储引擎级别的概念,不同存储引擎对索引的实现方式是不同的,本文主要讨论 MyISAM 和 InnoDB 两个存储引擎的索引实现方式。
 
 **主键和唯一索引的区别：**
 
@@ -422,7 +422,7 @@ innodb引擎的4大特性
 >
 > 程序方面： 单线程情况下，事务要么一起提交要么全部不做（原子性）
 >
-> ​ 高并发条件下，不同事物最终的处理结果要符合**逻辑的一致性**（隔离性）
+>  高并发条件下，不同事物最终的处理结果要符合**逻辑的一致性**（隔离性）
 
 3 、隔离性。一个事务的执行不能其它事务干扰。即一个事务内部的操作及使用的数据对其它并发事务是隔离的，并发执行的各个事务之间不能互相干扰。
 
@@ -519,11 +519,11 @@ MySQL 不同的存储引擎支持不同的锁机制，所有的存储引擎都�
 **不同粒度锁的比较：**
 
 * 表级锁：开销小，加锁快；不会出现死锁；锁定粒度大，发生锁冲突的概率最高，并发度最低。
-*
+  *
   * 这些存储引擎通过总是一次性同时获取所有需要的锁以及总是按相同的顺序获取表锁来避免死锁。
   * 表级锁更适合于以查询为主，并发用户少，只有少量按索引条件更新数据的应用，如Web 应用
 * 行级锁：开销大，加锁慢；会出现死锁；锁定粒度最小，发生锁冲突的概率最低，并发度也最高。
-*
+  *
   * 最大程度的支持并发，同时也带来了最大的锁开销。
   * 在 InnoDB 中，除单个 SQL 组成的事务外， 锁是逐步获得的，这就决定了在 InnoDB 中发生死锁是可能的。
   * 行级锁只在存储引擎层实现，而Mysql服务器层没有实现。 行级锁更适合于有大量按索引条件并发更新少量不同数据，同时又有并发查询的应用，如一些在线事务处理（OLTP）系统
@@ -604,7 +604,7 @@ InnoDB 实现了以下两种类型的**行锁**：
 * 意向锁是 InnoDB 自动加的， 不需用户干预。
 * 对于 UPDATE、 DELETE 和 INSERT 语句， InnoDB 会自动给涉及数据集加排他锁（X)；
 * 对于普通 SELECT 语句，InnoDB 不会加任何锁； 事务可以通过以下语句显式给记录集加共享锁或排他锁：
-*
+  *
   * 共享锁（S）：SELECT \* FROM table\_name WHERE ... LOCK IN SHARE MODE。 其他 session 仍然可以查询记录，并也可以对该记录加 share mode 的共享锁。但是如果当前事务需要对该记录进行更新操作，则很有可能造成死锁。
   * 排他锁（X)：SELECT \* FROM table\_name WHERE ... FOR UPDATE。其他 session 可以查询该记录，但是不能对该记录加共享锁或排他锁，而是等待获得锁
 * InnoDB这种行锁实现特点意味着：只有通过索引条件检索数据，InnoDB才使用行级锁，**否则，InnoDB将使用表锁！**
@@ -1320,3 +1320,44 @@ text CREATE TABLE IF NOT EXISTS `goods_attr_value_fts`
  FULLTEXT KEY `ft_attr_value_ids` (`attr_value_ids`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='商品和属性筛选表';
 ```
+
+### 死锁表现
+
+MySQL在进行alter table等DDL操作时，有时会出现Waiting for table metadata lock的等待场景。而且，一旦alter table TableA的操作停滞在Waiting for table metadata lock的状态，后续对TableA的任何操作（包括读）都无法进行，因为他们也会在Opening tables的阶段进入到Waiting for table metadata lock的锁等待队列。如果是产品环境的核心表出现了这样的锁等待队列，就会造成灾难性的后果。
+
+造成alter table产生Waiting for table metadata lock的原因其实很简单，一般是以下几个简单的场景：
+
+**场景一：长事物运行，阻塞DDL，继而阻塞所有同表的后续操作**
+
+通过show processlist可以看到TableA上有正在进行的操作（包括读），此时alter table语句无法获取到metadata 独占锁，会进行等待。
+
+这是最基本的一种情形，这个和mysql 5.6中的online ddl并不冲突。一般alter table的操作过程中（见下图），在after create步骤会获取metadata 独占锁，当进行到altering table的过程时（通常是最花时间的步骤），对该表的读写都可以正常进行，这就是online ddl的表现，并不会像之前在整个alter table过程中阻塞写入。（当然，也并不是所有类型的alter操作都能online的，具体可以参见官方手册：http://dev.mysql.com/doc/refman/5.6/en/innodb-create-index-overview.html）
+**处理方法：** kill 掉 DDL所在的session.
+
+![img](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/699877-20200331150157169-631519042.png)
+
+ 
+
+**场景二：未提交事物，\**阻塞DDL，继而阻塞所有同表的后续操作\****
+
+通过show processlist看不到TableA上有任何操作，但实际上存在有未提交的事务，可以在 **information_schema.innodb_trx**中查看到。在事务没有完成之前，TableA上的锁不会释放，alter table同样获取不到metadata的独占锁。
+
+处理方法：通过 select * from **information_schema.innodb_trx**\G, 找到未提交事物的sid, 然后 kill 掉，让其回滚。
+
+ 
+
+**场景三：**
+
+通过show processlist看不到TableA上有任何操作，在information_schema.innodb_trx中也没有任何进行中的事务。这很可能是因为在一个显式的事务中，对TableA进行了一个失败的操作（比如查询了一个不存在的字段），这时事务没有开始，但是失败语句获取到的锁依然有效，没有释放。从**performance_schema.events_statements_current**表中可以查到失败的语句。
+
+官方手册上对此的说明如下：
+
+If the server acquires metadata locks for a statement that is syntactically valid but fails during execution, it does not release the locks early. Lock release is still deferred to the end of the transaction because the failed statement is written to the binary log and the locks protect log consistency.
+
+也就是说除了语法错误，其他错误语句获取到的锁在这个事务提交或回滚之前，仍然不会释放掉。because the failed statement is written to the binary log and the locks protect log consistency 但是解释这一行为的原因很难理解，因为错误的语句根本不会被记录到二进制日志。
+
+**处理方法：**通过**performance_schema.events_statements_current**找到其sid, kill 掉该session. 也可以 kill 掉DDL所在的session.
+
+ 
+
+总之，alter table的语句是很危险的(其实他的危险其实是未提交事物或者长事务导致的)，在操作之前最好确认对要操作的表没有任何进行中的操作、没有未提交事务、也没有显式事务中的报错语句。如果有alter table的维护任务，在无人监管的时候运行，最好通过**lock_wait_timeout**设置好超时时间，避免长时间的metedata锁等待。
