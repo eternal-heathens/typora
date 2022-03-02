@@ -170,7 +170,7 @@ public String handlerMethod(@RequestBody("param1") String body) {
 >
 > 右边明显看到了一段乱码，为什么呢，以汉字‘丁’为例，其utf8编码为0xE4B881，这三个字节会直接拼接到数据包中，即其在实际发送时只占三字节，上图右边是逐字节转为ascii字符显示的，因此会显示为三个乱码字符。
 >
-> ### 4、由上可见，multipart/form-data将表单中的每个input转为了一个由boundary分割的小格式，没有转码，直接将utf8字节拼接到请求体中，在本地有多少字节实际就发送多少字节，极大提高了效率，适合传输长字节。
+> #### 4、由上可见，multipart/form-data将表单中的每个input转为了一个由boundary分割的小格式，没有转码，直接将utf8字节拼接到请求体中，在本地有多少字节实际就发送多少字节，极大提高了效率，适合传输长字节。
 >
 > 版权声明：本文为CSDN博主「hula\_好天气」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。 原文链接：https://blog.csdn.net/u013827143/article/details/86222486
 
