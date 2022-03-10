@@ -1,10 +1,10 @@
 # Table of contents
 
-* [BUG](README.md)
+* [BUG]
 * [disConf](disConf.md)
 * [代码规范](代码规范.md)
 * [总结](总结.md)
-* [Spring](spring/README.md)
+* [Spring]
   * [Spring BUG](<Spring/Spring BUG.md>)
   * [Spring](spring/spring.md)
   * [SpringBoot基础篇](spring/springboot-ji-chu-pian.md)
@@ -13,67 +13,64 @@
   * [Spring实战](spring/spring-shi-zhan.md)
   * [Spring整合中间件](spring/spring-zheng-he-zhong-jian-jian.md)
   * [Thymeleaf 概述](spring/themeleaf.md)
-* [中间件](zhong-jian-jian/README.md)
+* [中间件]
   * [AMPQ队列](中间件/AMPQ队列.md)
   * [Kafka](中间件/Kafka.md)
   * [RabbitMQ](中间件/RabbitMQ.md)
   * [Redis](中间件/Redis.md)
   * [docker](中间件/docker.md)
   * [消息队列了解](中间件/消息队列了解.md)
-  * [test](zhong-jian-jian/test/README.md)
-    * [Page 3](zhong-jian-jian/test/page-3.md)
-    * [Page 4](zhong-jian-jian/test/aa.md)
-* [云计算](yun-ji-suan/README.md)
+* [云计算]
   * [Daas、IaaS、PaaS和SaaS](云计算/Daas、IaaS、PaaS和SaaS.md)
-* [传输数据](chuan-shu-shu-ju/README.md)
+* [传输数据]
   * [JSON 简介](传输数据/JSON.md)
   * [XML](传输数据/XML.md)
-* [入职BUG](ru-zhi-bug/README.md)
+* [入职BUG]
   * [1](入职BUG/1.md)
-* [分布式系统](fen-bu-shi-xi-tong/README.md)
+* [分布式系统]
   * [简介](分布式系统/Disconf.md)
   * [dubbo](分布式系统/dubbo.md)
   * [hadoop简介](分布式系统/hadoop简介.md)
   * [zookeeper](分布式系统/zookeeper.md)
   * [分布式锁](分布式系统/分布式锁.md)
   * [微服务QA](分布式系统/微服务QA.md)
-* [前端](qian-duan/README.md)
+* [前端]
   * [HTML](前端/HTML.md)
   * [Javascript](前端/Javascript.md)
   * [Procedural experience](<前端/Procedural experience .md>)
-* [博客搭建](bo-ke-da-jian/README.md)
+* [博客搭建]
   * [框架选择](博客搭建/框架选择.md)
-* [基础课程](ji-chu-ke-cheng/README.md)
+* [基础课程]
   * [第一章](基础课程/图解HTTP.md)
   * [大话数据结构](基础课程/大话数据结构.md)
   * [计算机网络](基础课程/计算机网络.md)
   * [动态规划](基础课程/算法.md)
   * [瀑布式开发和敏捷式开发](基础课程/软件工程.md)
   * [软件测试](基础课程/软件测试.md)
-* [工具](gong-ju/README.md)
+* [工具]
   * [GIT HUB](<工具/GIT HUB.md>)
-  * [GIT](gong-ju/git.md)
-* [操作系统](cao-zuo-xi-tong-3/README.md)
+  * [GIT](工具/git.md)
+* [操作系统]
   * [Linux 咋问](<操作系统/Linux 咋问.md>)
   * [Linux](操作系统/Linux.md)
   * [Linux优势](操作系统/Linux优势.md)
   * [操作系统复习](操作系统/操作系统复习.md)
   * [银行家算法](操作系统/操作系统算法.md)
-* [数据库](shu-ju-ku/README.md)
+* [数据库]
   * [Hibernate](数据库/Hibernate.md)
   * [mybaties与Redies简介](数据库/mybaties与Redies简介.md)
   * [mybatis](数据库/mybatis.md)
   * [mybatisPlus](数据库/mybatisPlus.md)
   * [mysql](数据库/mysql.md)
   * [myCat](数据库/mycat.md)
-* [架构](jia-gou/README.md)
+* [架构]
   * [微服务简介](架构/微服务简介.md)
-* [测试开发](ce-shi-kai-fa/README.md)
+* [测试开发]
   * [Jmeter](测试开发/Jmeter.md)
-* [网络安全](wang-luo-an-quan/README.md)
+* [网络安全]
   * [CTF](网络安全/CTF.md)
   * [加密算法](网络安全/加密算法.md)
-* [设计模式](she-ji-mo-shi/README.md)
+* [设计模式]
   * [享元模式](设计模式/享元模式.md)
   * [单例模式](设计模式/单例模式.md)
   * [外观模式(Facade)](设计模式/外观模式.md)
@@ -85,12 +82,12 @@
 * 集成部署
   * [CI与CD](集成部署/CI与CD.md)
   * [三种发版模式](集成部署/三种发版模式.md)
-* [项目管理框架](xiang-mu-guan-li-kuang-jia/README.md)
+* [项目管理框架]
   * [Gradle](项目管理框架/Gradle.md)
-* [高并发框架](gao-bing-fa-kuang-jia/README.md)
+* [高并发框架]
   * [Netty](高并发框架/Netty.md)
-* [高级语言](gao-ji-yu-yan-1/README.md)
-  * [JAVA](gao-ji-yu-yan-1/java/README.md)
+* [高级语言]
+  * [JAVA]
     * [JAVA并发](高级语言/JAVA/JAVA并发.md)
     * [JDK基础架构](高级语言/JAVA/JDK基础架构.md)
     * [JSP](高级语言/JAVA/JSP.md)
@@ -102,6 +99,6 @@
     * [基础知识](高级语言/JAVA/java开发书籍.md)
     * [jdk除标准库之外](高级语言/JAVA/jdk除标准库之外.md)
     * [JAVA](高级语言/JAVA/JAVA.md)
-  * [PYTHON](gao-ji-yu-yan-11/python/README.md)
+  * [PYTHON]
     * [PYTHON](高级语言/PYTHON/PYTHON.md)
 * [topTest](toptest.md)
