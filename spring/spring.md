@@ -18,9 +18,9 @@
 
 **应用场景**：
 
-​ 1、Bean实现类来源于第三方类库，如 DataSoure、JdbcTemplate等，因无法在类中标注注解，所以通过XML配置方式比较好。
+ 1、Bean实现类来源于第三方类库，如 DataSoure、JdbcTemplate等，因无法在类中标注注解，所以通过XML配置方式比较好。
 
-​ 2、命名空间的配置，如aop、context等，只能采用基于XML的配置。
+ 2、命名空间的配置，如aop、context等，只能采用基于XML的配置。
 
 ### 基于注解配置
 
@@ -38,9 +38,9 @@
 
 **应用场景**：
 
-​ 1、Bean的实现类是当前项目开发的，可以直接在Java类中使用基于注解的配置。
+ 1、Bean的实现类是当前项目开发的，可以直接在Java类中使用基于注解的配置。
 
-​
+
 
 ### 基于Java类配置
 
@@ -62,9 +62,9 @@
 
 **应用场景**：
 
-​ 1、基于JAVA类配置的优势在于可以通过代码方法控制Bean初始化的整体逻辑。如果实例化Bean的逻辑比较复杂，则比较适合基于Java类配置的方式。
+ 1、基于JAVA类配置的优势在于可以通过代码方法控制Bean初始化的整体逻辑。如果实例化Bean的逻辑比较复杂，则比较适合基于Java类配置的方式。
 
-​
+
 
 ### 基于Groovy DSL配置
 
@@ -82,7 +82,7 @@
 
 **应用场景**：
 
-​ 1、基于Groovy DSL配置的优势在于可以通过Groovy脚本灵活控制Bean初始化的过程。如果实例化Bean的逻辑比较复杂，则比较适合基于Groovy DSL配置的方式。
+ 1、基于Groovy DSL配置的优势在于可以通过Groovy脚本灵活控制Bean初始化的过程。如果实例化Bean的逻辑比较复杂，则比较适合基于Groovy DSL配置的方式。
 
 ![](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624172023357.png) ![image-20200626100931779](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626100931779.png)
 
@@ -995,8 +995,51 @@ https://blog.csdn.net/weixin\_41712059/article/details/103151238
 >
 > 　　我们所熟知的编程语言中几乎都有语法糖。作者认为，语法糖的多少是评判一个语言够不够牛逼的标准之一。很多人说Java是一个“低糖语言”，其实从Java 7开始Java语言层面上一直在添加各种糖，主要是在“Project Coin”项目下研发。尽管现在Java有人还是认为现在的Java是低糖，未来还会持续向着“高糖”的方向发展。
 >
->
+> 
 >
 > **解语法糖**
 >
 > 　　前面提到过，语法糖的存在主要是方便开发人员使用。但其实，Java虚拟机并不支持这些语法糖。这些语法糖在编译阶段就会被还原成简单的基础语法结构，这个过程就是解语法糖。说到编译，大家肯定都知道，Java语言中，javac命令可以将后缀名为.java的源文件编译为后缀名为.class的可以运行于Java虚拟机的字节码。如果你去看com.sun.tools.javac.main.JavaCompiler的源码，你会发现在compile()中有一个步骤就是调用desugar()，这个方法就是负责解语法糖的实现的。**属于语法糖部分的代码，在jdk中的javac前端编译器编译成字节码文件时便已经解语法糖，变成了即时编译器JVM支持的基础语法结构**，**Java 中最常用的语法糖主要有泛型、变长参数、条件编译、自动拆装箱、内部类、匿名内部类引用局部变量的final、枚举类等。**
+
+### Spring为啥不推荐使用@Autowired注解？
+
+问题一
+基于 field 的注入可能会带来一些隐含的问题。来我们举个例子：
+
+```java
+@Autowired
+private User user;
+
+private String company;
+
+public UserDaoImpl(){
+    this.company = user.getCompany();
+}
+```
+
+```java
+Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [...]: Constructor threw exception; nested exception is java.lang.NullPointerException
+```
+
+Java 在初始化一个类时，是按照静态变量或静态语句块 –> 实例变量或初始化语句块 –> 构造方法 -> @Autowired 的顺序。所以在执行这个类的构造方法时，user对象尚未被注入，它的值还是 null。
+
+问题二：
+
+变量注入容易遇到不在spring管理下的容器时出现空指针异常
+
+依赖注入的核心思想之一就是被容器管理的类不应该依赖被容器管理的依赖，换成白话来说就是如果这个类使用了依赖注入的类，那么这个类摆脱了这几个依赖必须也能正常运行，这种方式就过于依赖注入容器了，当没有启动整个依赖容器时，这个类就不能运转，在反射时无法提供这个类需要的依赖。
+
+因此变量方式注入应该尽量避免，使用set方式注入或者构造器注入，这两种方式的选择就要看这个类是强制依赖的话就用构造器方式，选择依赖的话就用set方法注入。
+
+但时至2021年，autowired的required参数和现在编译检查好像能避免问题二
+
+解决方式：
+
+用@AllArgsConstructor和final（final也可以不加）  代替 Autowried(有常量问题，解决方案让那个变量作为常量,也就是static,就不会参与构造函数,也就不会报错了)
+
+或者用@RequiredArgsConstrutor（onConstructor_ = @Autowired），需要被build的属性,添加final修饰符
+
+
+
+
+
