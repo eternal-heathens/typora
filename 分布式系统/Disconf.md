@@ -13,10 +13,10 @@ Distributed Configuration Management Platform（分布式配置管理）
 1. 导入jar包
 
 > ``` xml
->  <dependency>
->                 <groupId>com.baidu.disconf</groupId>
->                 <artifactId>disconf-client</artifactId>
->                 <version> 2.6.30</version>
+> <dependency>
+>              <groupId>com.baidu.disconf</groupId>
+>              <artifactId>disconf-client</artifactId>
+>              <version> 2.6.30</version>
 > </dependency>
 > ```
 
@@ -25,21 +25,21 @@ Distributed Configuration Management Platform（分布式配置管理）
 > ```xml
 > <!-- 使用disconf必须添加以下配置 -->
 > <bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
->       destroy-method="destroy">
->     <property name="scanPackage" value="com.sf.o2o.dds.dms.admin"/>
+>    destroy-method="destroy">
+>  <property name="scanPackage" value="com.sf.o2o.dds.dms.admin"/>
 > </bean>
 > <bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
->       init-method="init" destroy-method="destroy">
+>    init-method="init" destroy-method="destroy">
 > </bean>
 > 
 > <!-- 使用托管方式的disconf配置(无代码侵入, 配置更改会自动reload)-->
 > <bean id="configproperties_disconf"
->       class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
->     <property name="locations">
->         <list>
->             <value>classpath*:dms-admin.properties</value>
->         </list>
->     </property>
+>    class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
+>  <property name="locations">
+>      <list>
+>          <value>classpath*:dms-admin.properties</value>
+>      </list>
+>  </property>
 > </bean>
 > ```
 
@@ -85,7 +85,6 @@ http://disconf.readthedocs.io/zh_CN/latest/design/index.html
 3. 为该域的get方法上添加注解 @DisconfFileItem 。添加标记 name, 表示配置文件中的KEY名，这是必填的
 4. 标记associateField是可选的，它表示此get方法相关连的域的名字，如果此标记未填，则系统会自动 分析get方法，猜测其相对应于域名。**强烈建议添加associateField标记，这样就可以避免Eclipse生成的Get/Set方法不符合 Java规范的问题。**
 5. 标记它为Spring托管的类 （使用@Service），且 "scope" 都必须是singleton的。
-   
 
 **5.配置更新回调**
 
@@ -167,7 +166,7 @@ Disconf主要是依靠zookeeper的Watch机制来做配置实时修改的,我们�
 
 # 配置时各个bean的作用
 
-**DisconfMgrBean**
+**DisconfMgrBean（必）**
 
 此Bean实现了BeanFactoryPostProcessor和PriorityOrdered接口。它的Bean初始化Order是最高优先级的。
 
@@ -183,7 +182,7 @@ Disconf主要是依靠zookeeper的Watch机制来做配置实时修改的,我们�
 6. 配置文件和配置项的数据会注入到配置仓库里。
 7. 使用watch模块为所有配置关联ZK上的结点。
 
-**DisconfMgrBeanSecond**
+**DisconfMgrBeanSecond（必）**
 
 DisconfMgrBean的扫描主要是静态数据的初始化，并未涉及到动态数据。DisconfMgrBeanSecond Bean则是将一些动态的数据写到仓库里。
 
@@ -194,14 +193,14 @@ DisconfMgrBean的扫描主要是静态数据的初始化，并未涉及到动态
 
 * 当DisconfMgrBean第一次扫描时，watcher监控不到相应的类时，但是对应的disconf.user_define_download_dir中再本地存在相应的properties，MgrBeanSecond也能执行注入
 
-**ReloadablePropertiesFactoryBean**
+**ReloadablePropertiesFactoryBean(在disconfClient启动时DisconfMgrBean处理时用到，只有在这里出现的才会被下载至本地，可以用@DisconfFile代替，注解实现为aop实现，实体类注入时属性根据反射拿不到值，只能通过get方法拿值)**
 
 ReloadablePropertiesFactoryBean继承了PropertiesFactoryBean类，它主要做到：
 
 - 托管配置文件至disconf仓库，并下载至本地。
 - 解析配置数据传递到 ReloadingPropertyPlaceholderConfigurer
 
-**ReloadingPropertyPlaceholderConfigurer**
+**ReloadingPropertyPlaceholderConfigurer（property占位符解析类，搭配@value/@ConfigurationProperties等用于将property注入到bean属性中，分为自动不自动，分别在DisconfMgrBeanSecond和DisconfMgrBean处理时用到）**
 
 ReloadingPropertyPlaceholderConfigurer继承自Spring的配置类PropertyPlaceholderConfigurer，它会在Spring启动时将配置数据与Bean做映射，以便在检查到配置文件更改时，可以实现Bean相关域值的自动注入。
 
@@ -234,3 +233,14 @@ ReloadingPropertyPlaceholderConfigurer继承自Spring的配置类PropertyPlaceho
 
 它是一个Timer类，定时校验配置是否有更改，进而促发 ReloadingPropertyPlaceholderConfigurer 类来分析要对哪些 Bean实例进行重新注入。
 
+## 生产
+
+### 生效位置
+
+disconf.properties只在application所在的项目中生效
+
+### 用@propertySource+@ConfigurationProperties
+
+![image-20220323170557957](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20220323170557957.png)
+
+![image-20220323165845505](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20220323165845505.png)

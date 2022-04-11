@@ -84,88 +84,88 @@
 
  1、基于Groovy DSL配置的优势在于可以通过Groovy脚本灵活控制Bean初始化的过程。如果实例化Bean的逻辑比较复杂，则比较适合基于Groovy DSL配置的方式。
 
-![](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624172023357.png) ![image-20200626100931779](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626100931779.png)
+![](Spring.assets%5Cimage-20200624172023357.png) ![image-20200626100931779](Spring.assets%5Cimage-20200626100931779.png)
 
 * 应用工厂方法创建需要的资源，以供APP调用，放入Map类型的bean容器中以便只创建一个对象并只一直对这个对象进行操作
 
-![image-20200624175855384](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624175855384.png)
+![image-20200624175855384](Spring.assets%5Cimage-20200624175855384.png)
 
-![image-20200624175911269](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624175911269.png)
+![image-20200624175911269](Spring.assets%5Cimage-20200624175911269.png)
 
 * 在工厂中创建bean对象的三种方法，默认构造函数若有constructor-arg则可以用带参数的构造函数。
 
-![image-20200624190047128](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624190047128.png)
+![image-20200624190047128](Spring.assets%5Cimage-20200624190047128.png)
 
-![image-20200624195026798](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624195026798.png)
+![image-20200624195026798](Spring.assets%5Cimage-20200624195026798.png)
 
-![image-20200624200708233](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624200708233.png)
+![image-20200624200708233](Spring.assets%5Cimage-20200624200708233.png)
 
 * 如果经常变化的数据，并不适用于注入的方式
 
-![image-20200626105404879](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626105404879.png)
+![image-20200626105404879](Spring.assets%5Cimage-20200626105404879.png)
 
-![image-20200624204112274](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624204112274.png)
+![image-20200624204112274](Spring.assets%5Cimage-20200624204112274.png)
 
-![image-20200626111150208](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626111150208.png)
+![image-20200626111150208](Spring.assets%5Cimage-20200626111150208.png)
 
-![image-20200626111333772](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626111333772.png)
+![image-20200626111333772](Spring.assets%5Cimage-20200626111333772.png)
 
-![image-20200624205352081](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624205352081.png)
+![image-20200624205352081](Spring.assets%5Cimage-20200624205352081.png)
 
-![image-20200626111524993](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626111524993.png)
+![image-20200626111524993](Spring.assets%5Cimage-20200626111524993.png)
 
 * 只关心set方法的方法名
 
-![image-20200624210850659](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200624210850659.png)
+![image-20200624210850659](Spring.assets%5Cimage-20200624210850659.png)
 
 * 两种注入方式都可以
 * 注解既可以用于创建bean对象（先用contextsacn扫描），又可以在标签的基础上注入依赖（自动:Autowired,+Qualifier可以指定，Value用于指定基本类型），甚至可以通过Configuration注解涉略掉contextscan扫描
 
-![image-20200625101710248](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625101710248.png)
+![image-20200625101710248](Spring.assets%5Cimage-20200625101710248.png)
 
-![image-20200625110311613](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625110311613.png) ![image-20200625111011079](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625111011079.png)
+![image-20200625110311613](Spring.assets%5Cimage-20200625110311613.png) ![image-20200625111011079](Spring.assets%5Cimage-20200625111011079.png)
 
-![image-20200625145355850](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625145355850.png)
+![image-20200625145355850](Spring.assets%5Cimage-20200625145355850.png)
 
-![image-20200625151610240](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625151610240.png)
+![image-20200625151610240](Spring.assets%5Cimage-20200625151610240.png)
 
-![image-20200625151538155](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625151538155.png) ![image-20200625151917183](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625151917183.png)
+![image-20200625151538155](Spring.assets%5Cimage-20200625151538155.png) ![image-20200625151917183](Spring.assets%5Cimage-20200625151917183.png)
 
-![image-20200625184727135](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625184727135.png)
+![image-20200625184727135](Spring.assets%5Cimage-20200625184727135.png)
 
 * 数据源也可配置成容器、Runner面对多个Dao对象时的线程安全
 
-![image-20200625202915987](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625202915987.png)
+![image-20200625202915987](Spring.assets%5Cimage-20200625202915987.png)
 
-![image-20200625204425267](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625204425267.png)
+![image-20200625204425267](Spring.assets%5Cimage-20200625204425267.png)
 
 * 需要创建容器的类用于AnnotationConfigApplicationContext是不注解也会自动加入容器
 
-![image-20200625212914836](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625212914836.png)
+![image-20200625212914836](Spring.assets%5Cimage-20200625212914836.png)
 
-![image-20200625213822300](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625213822300.png)
+![image-20200625213822300](Spring.assets%5Cimage-20200625213822300.png)
 
 * 如果是导入的包用xml比较合适，如果是自己写的类，注解方便点
 
-![image-20200625215604223](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200625215604223.png)
+![image-20200625215604223](Spring.assets%5Cimage-20200625215604223.png)
 
 * RunWith用Junit的Srpingtest依赖（maven），再用ContextConfiguration标明容器化的位置，再用Autowired的自动注入（扫描注解会自动生成容器）
 
-![image-20200626153808540](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626153808540.png)
+![image-20200626153808540](Spring.assets%5Cimage-20200626153808540.png)
 
-![image-20200626153840701](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626153840701.png)
+![image-20200626153840701](Spring.assets%5Cimage-20200626153840701.png)
 
-![image-20200626154123981](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626154123981.png)
+![image-20200626154123981](Spring.assets%5Cimage-20200626154123981.png)
 
 *   cglib
 
-    ![image-20200626164023501](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626164023501.png)
+    ![image-20200626164023501](Spring.assets%5Cimage-20200626164023501.png)
 
-![image-20200626164131453](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626164131453.png)
+![image-20200626164131453](Spring.assets%5Cimage-20200626164131453.png)
 
 ## AOP
 
-![image-20200626193001665](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626193001665.png)
+![image-20200626193001665](Spring.assets%5Cimage-20200626193001665.png)
 
 通过动态代理实现面向切面的编程，是函数式编程的可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性。
 
@@ -173,39 +173,39 @@ JointPoint：程序运行中的一个被拦截的行为
 
 PointCut：invoke方法中对于Joinpoint的调用的行为
 
-![image-20200626201506651](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626201506651.png)
+![image-20200626201506651](Spring.assets%5Cimage-20200626201506651.png)
 
 * 连接点（所有被代理接口中的方法），切入点：连接点中被增强的连接点
 
-![image-20200626201913615](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626201913615.png)
+![image-20200626201913615](Spring.assets%5Cimage-20200626201913615.png)
 
-![image-20200626202152133](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626202152133.png)
+![image-20200626202152133](Spring.assets%5Cimage-20200626202152133.png)
 
-![image-20200626202743981](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626202743981.png)
+![image-20200626202743981](Spring.assets%5Cimage-20200626202743981.png)
 
 ### [aop:aspect](aop:aspect)
 
-![image-20200626205509055](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626205509055.png)
+![image-20200626205509055](Spring.assets%5Cimage-20200626205509055.png)
 
-![image-20200626205443285](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626205443285.png)
+![image-20200626205443285](Spring.assets%5Cimage-20200626205443285.png)
 
-![image-20200626205535029](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626205535029.png)
+![image-20200626205535029](Spring.assets%5Cimage-20200626205535029.png)
 
-![image-20200626211959142](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626211959142.png)
+![image-20200626211959142](Spring.assets%5Cimage-20200626211959142.png)
 
 ![image-20200626212051843](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626212051843.png) ![image-20200626212334057](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626212334057.png) ![image-20200626213237753](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626213237753.png) ![image-20200626213257768](https://f/Typora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98/Spring/Spring.assets/image-20200626213257768.png)
 
 * 四个通知类型，配置切入点表达式，在aop：aspect外面的切入点表达式需要在配置通知前面
 
-![image-20200626214046683](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626214046683.png)
+![image-20200626214046683](Spring.assets%5Cimage-20200626214046683.png)
 
-![image-20200626215320009](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626215320009.png)
+![image-20200626215320009](Spring.assets%5Cimage-20200626215320009.png)
 
-![image-20200626215333127](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626215333127.png)
+![image-20200626215333127](Spring.assets%5Cimage-20200626215333127.png)
 
-![image-20200626215402944](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626215402944.png)
+![image-20200626215402944](Spring.assets%5Cimage-20200626215402944.png)
 
-![image-20200626220829370](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626220829370.png)
+![image-20200626220829370](Spring.assets%5Cimage-20200626220829370.png)
 
 * 注解AOP如果不用环绕用别的，会出现顺序问题，如果要用，建议用环绕
 
@@ -263,27 +263,27 @@ https://www.jianshu.com/p/7388398d7019
 
 ## 数据访问层封装
 
-![](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200626233906439.png)
+![](Spring.assets%5Cimage-20200626233906439.png)
 
 *   BeanPropertyRowMapper和RowMapper的区别（bean封装了RowMapper需要自己实现的部分）
 
-    ![image-20200627221326997](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627221326997.png)
+    ![image-20200627221326997](Spring.assets%5Cimage-20200627221326997.png)
 * JdbcDaoSupport的使用以及Dao的两种编写方式
   * 注解时多个Template是无法autowired+其他的改边指定
-* ![image-20200627232303922](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627232303922.png)
+* ![image-20200627232303922](Spring.assets%5Cimage-20200627232303922.png)
   * 灵活
 
-![image-20200627232331122](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627232331122.png)
+![image-20200627232331122](Spring.assets%5Cimage-20200627232331122.png)
 
-![image-20200627235605512](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200627235605512.png)
+![image-20200627235605512](Spring.assets%5Cimage-20200627235605512.png)
 
-![image-20200628000302772](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000302772.png)
+![image-20200628000302772](Spring.assets%5Cimage-20200628000302772.png)
 
-![image-20200628000313928](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000313928.png)
+![image-20200628000313928](Spring.assets%5Cimage-20200628000313928.png)
 
-![image-20200628000321085](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000321085.png)
+![image-20200628000321085](Spring.assets%5Cimage-20200628000321085.png)
 
-![image-20200628000338472](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000338472.png)
+![image-20200628000338472](Spring.assets%5Cimage-20200628000338472.png)
 
 ## SPRING事务传播机制
 
@@ -299,23 +299,23 @@ https://www.jianshu.com/p/7388398d7019
 | PROPAGATION\_NEVER          | 以非事务方式执行，如果当前存在事务，则抛出异常。                                    |
 | PROPAGATION\_NESTED         | 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION\_REQUIRED类似的操作。 |
 
-![image-20200628000514554](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628000514554.png)
+![image-20200628000514554](Spring.assets%5Cimage-20200628000514554.png)
 
 * 基于XML的事务控制管理
 
-![image-20200628114156648](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628114156648.png)
+![image-20200628114156648](Spring.assets%5Cimage-20200628114156648.png)
 
-![image-20200628114223723](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628114223723.png)
+![image-20200628114223723](Spring.assets%5Cimage-20200628114223723.png)
 
 * 基于注解的事务控制管理（任用xml配置datasource和扫描）
 
-![image-20200628132748481](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628132748481.png)
+![image-20200628132748481](Spring.assets%5Cimage-20200628132748481.png)
 
-![image-20200628132818785](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628132818785.png)
+![image-20200628132818785](Spring.assets%5Cimage-20200628132818785.png)
 
 * 纯注解的事务控制管理
 
-![image-20200628134037927](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20200628134037927.png)
+![image-20200628134037927](Spring.assets%5Cimage-20200628134037927.png)
 
 ## Spring Bean
 
@@ -323,7 +323,7 @@ https://www.jianshu.com/p/7388398d7019
 
 #### **一、生命周期流程图：**
 
-![image-20201030134546745](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5CSpring%5CSpring.assets%5Cimage-20201030134546745.png)
+![image-20201030134546745](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20201030134546745.png)
 
 #### **二、各种接口方法分类**
 
