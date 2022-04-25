@@ -200,7 +200,7 @@ ReloadablePropertiesFactoryBean继承了PropertiesFactoryBean类，它主要做�
 - 托管配置文件至disconf仓库，并下载至本地。
 - 解析配置数据传递到 ReloadingPropertyPlaceholderConfigurer
 
-**ReloadingPropertyPlaceholderConfigurer（property占位符解析类，搭配@value/@ConfigurationProperties等用于将property注入到bean属性中，分为自动不自动，分别在DisconfMgrBeanSecond和DisconfMgrBean处理时用到）**
+**PropertyPlaceholderConfigurer/ReloadingPropertyPlaceholderConfigurer（property占位符解析类，搭配@value/@ConfigurationProperties等用于将property注入到bean属性中，分为自动不自动，分别在DisconfMgrBeanSecond和DisconfMgrBean处理时用到）**
 
 ReloadingPropertyPlaceholderConfigurer继承自Spring的配置类PropertyPlaceholderConfigurer，它会在Spring启动时将配置数据与Bean做映射，以便在检查到配置文件更改时，可以实现Bean相关域值的自动注入。
 
@@ -244,3 +244,27 @@ disconf.properties只在application所在的项目中生效
 ![image-20220323170557957](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20220323170557957.png)
 
 ![image-20220323165845505](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20220323165845505.png)
+
+
+
+# reload
+
+**@DisconfFile**
+
+会自动下载文件到本地，并且因为aop实现，每次调用都会获取最新的文件的值，但是涉及较重的配置如redis/jdbc这种取一遍值生成client的，若需要重新生成新的client需要有回调函数，DisconfMgrBeanSecond会扫描调取了对应方法上@DisconfUpdateService 注解并继承IDisconfUpdate 接口的回调类
+
+**ReloadablePropertiesFactoryBean**
+
+启动时下载配置文件；配置文件变化时，负责动态推送。（会更新到classpath与内存中，enviroment.getPropertySources，xxx.properties会更新）
+
+**PropertyPlaceholderConfigurer**
+
+配置文件没有相应的配置注解类，**此配置文件不会被注入到配置类中**。disconf只是简单的对其进行“托管”。 注意，此种方式，程序不会自动reload到javabean，需要自己写回调函数来完成相应的javaBean更改。
+
+**ReloadingPropertyPlaceholderConfigurer** 
+
+自动获取DisconfMgrBean注册到仓库中的配置类javabean信息，并重新加载该配置类JavaBean
+
+
+
+**PropertyPlaceholderConfigurer与ReloadingPropertyPlaceholderConfigurer，若需要重新生成新的client需要有回调函数，DisconfMgrBeanSecond会扫描调取了对应方法上@DisconfUpdateService 注解并继承IDisconfUpdate 接口的回调类**

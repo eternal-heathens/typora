@@ -210,10 +210,10 @@ public class HelloController {
     ```
     // JavaBean类
     public class Account implements Serializable {
-
+    
         private String username;
         private Integer age;
-
+    
         // 所有属性的getset方法...
     }
     ```
@@ -233,16 +233,16 @@ public class HelloController {
 
     ```
     public class Account implements Serializable {
-
+    
         private String username;
         private Intger age;
         private User user;
-
+    
     	// 所有属性的getset方法...
     }
-
+    
     public class User implements Serializable{
-
+    
         private String uname;
         private Double umoney;
         
@@ -589,7 +589,7 @@ ModelAndView为我们提供了一种更灵活地为页面添加属性和指定�
     @Controller
     @RequestMapping("/user")
     public class UserController {
-
+    
     	@RequestMapping("/testModelAndView")
         public ModelAndView testModelAndView() {
             
@@ -598,10 +598,10 @@ ModelAndView为我们提供了一种更灵活地为页面添加属性和指定�
             
             // 向model中存入属性attribute_user
     		mv.addObject("attribute_user", new User("张三", "123"));
-
+    
             // 指定返回视图,视图解析器将"success"解析为视图URL /WEB-INF/pages/succeess.jsp
             mv.setViewName("success");
-
+    
             return mv;
         }
     }
@@ -1920,6 +1920,8 @@ public Object processParameterObject(MappedStatement ms, Object parameterObject,
 * 最后便是执行转换后的sql语句的事情了
 
 #### 8、Filter和MVC Interceptor
+
+![img](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/20201016201933362.png)
 
 * **该PageInterceptor是在dao层下面的sqlsession.selectlist下面对statemnehandler进行拦截生成代理对象的，可以说是对dao层（sql语句execute前）的拦截增强，配置进sqlsessionfactory的configuration**
 * **Spirngmvc的是对servlet容器的增强后的代理对象实行拦截，是在进入DispactherServlet经过handlermappering之后而在Controller之前，在springmvc文件配置，依据他生成servlet的代理对象，所以需要配置在springmvc文件中**，我们service层（若事务管理则是AOP生成service代理对象）的对象一般也只是封装到了servlet层中的service中的doget/dopost等7个方法中，而引用service的controller层便是由dispatcherservler经过Handlermapping返回的HandlerExecutionChain（包含handler和handlerInterceptor）进行控制的，因此在配置dispatcherSevlet时用的init-param中对应的SpringMvcConfig.xml文件配置Interceptor就可以对所有controller（最后也是servlet）生成代理类，在请求来时对设定的path进行拦截增强。

@@ -4028,3 +4028,58 @@ fileName如果是前面加“/”，如"/fileName"，则表示绝对路径，取
 以文件在本机的绝对路径显示，不会有file://
 
 **推荐使用Thread.currentThread.getPah()**
+
+
+
+### 加载classpath路径下的资源
+
+**方式一：通过classLoader以流的方式加载**
+
+```java
+/**
+* 获取classLoader的三种方式
+**/
+ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+public class A {
+public void getClassLoader() {
+ClassLoader classLoader = this.getClass().getClassLoader();
+}
+}
+/**
+ * 读取classpath下的资源文件
+ */
+@Test
+public void test1() throws Exception {
+ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+InputStream in = classLoader.getResourceAsStream("jdbc.properties");
+Properties prop = new Properties();
+prop.load(in);
+prop.entrySet().forEach(System.out::println);
+}
+```
+
+**方式二：PropertySource注解加载指定的属性文件**
+
+```java
+@PropertySource(value= {"classpath:config/jdbc-bainuo-dev.properties"},ignoreResourceNotFound=false,encoding="UTF-8",name="jdbc-bainuo-dev.properties")
+```
+
+**encoding**用于指定读取属性文件所使用的编码，我们通常使用的是UTF-8；
+
+**ignoreResourceNotFound**含义是当指定的配置文件不存在是否报错，默认是false;比如上文中指定的加载属性文件是jdbc-bainuo-dev.properties。如果该文件不存在，则ignoreResourceNotFound为true的时候，程序不会报错，如果ignoreResourceNotFound为false的时候，程序直接报错。实际项目开发中，最好设置ignoreResourceNotFound为false。该参数默认值为false。
+
+ **value**值是设置需要加载的属性文件，可以一次性加载多个。name的值我们设置的是jdbc-bainuo-dev.properties。这个值在Springboot的环境中必须是唯一的，如果不设置，则值为：“class path resource [config/jdbc-bainuo-dev.properties]“。
+
+ 可能很多人比较纳闷，为什么是“class path resource [config/jdbc-bainuo-dev.properties]“呢？这个就涉及到了Spring中对资源文件的封装类Resource。上文我们配置的value值为"classpath:config/jdbc-bainuo-dev.properties"，因此Spring发现是classpath开头的，因此最终使用的是Resource的子类ClassPathResource。如果是file开头的，则最终使用的类是FileSystemResource。
+
+**name**,如果@PropertySource中如果没有设置name值，则name值的生成规则是：根据value值查找到最终封装的Resource子类，然后调用具体的Resource子类实例对象中的getDescription方法，getDescription方法的返回值为最终的name值。
+
+通常搭配@Value/@ConfigurationProperties综合使用
+
+
+
+
+# Java 注解
+
+https://www.zhihu.com/question/24401191
