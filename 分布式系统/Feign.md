@@ -175,3 +175,21 @@ public class RequestHeaderHystrixConcurrencyStrategy extends HystrixConcurrencyS
 成熟的rpc库相对普通的http容器，更多的是封装了“服务发现”，"负载均衡"，“熔断降级”一类面向服务的高级特性。可以这么理解，rpc框架是面向服务的更高级的封装。**如果把一个http servlet容器上封装一层服务发现和函数代理调用，那它就已经可以做一个rpc框架了。**
 
 传统rpc中tcp传输协议的自定义可以让传输效率定制化，但是随着http2的推出很多效率问题已经不大了，而且http协议有跨语言的好处，因此也可以依据http封装一层服务治理相关的特性生成一套组件，也是一个rpc的发展方向（如以前的grpc和springcloud的fegin）
+
+
+
+
+
+# Feign和RestTemplate的区别
+
+请求方式不一样
+
+RestTemplate需要每个请求都拼接url+参数+类文件，灵活性高但是消息封装臃肿。
+
+feign可以伪装成类似SpringMVC的controller一样，将rest的请求进行隐藏，不用再自己拼接url和参数，可以便捷优雅地调用HTTP API。
+
+底层实现方式不一样
+
+RestTemplate在拼接url的时候，可以直接指定ip地址+端口号，不需要经过服务注册中心就可以直接请求接口；也可以指定服务名，请求先到服务注册中心（如nacos）获取对应服务的ip地址+端口号，然后经过HTTP转发请求到对应的服务接口（注意：这时候的restTemplate需要添加@LoadBalanced注解，进行负载均衡）。
+
+Feign的底层实现是动态代理，如果对某个接口进行了@FeignClient注解的声明，Feign就会针对这个接口创建一个动态代理的对象，在调用这个接口的时候，其实就是调用这个接口的代理对象，代理对象根据@FeignClient注解中name的值在服务注册中心找到对应的服务，然后再根据@RequestMapping等其他注解的映射路径构造出请求的地址，针对这个地址，再从本地实现HTTP的远程调用。

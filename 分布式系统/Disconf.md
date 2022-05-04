@@ -268,3 +268,11 @@ disconf.properties只在application所在的项目中生效
 
 
 **PropertyPlaceholderConfigurer与ReloadingPropertyPlaceholderConfigurer，若需要重新生成新的client需要有回调函数，DisconfMgrBeanSecond会扫描调取了对应方法上@DisconfUpdateService 注解并继承IDisconfUpdate 接口的回调类**
+
+
+
+### @ConfigurationProperties
+
+常用方式Object,list,map, Object List
+
+https://blog.csdn.net/sayyy/article/details/83657119
