@@ -1321,7 +1321,7 @@ text CREATE TABLE IF NOT EXISTS `goods_attr_value_fts`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci COMMENT='商品和属性筛选表';
 ```
 
-### 死锁表现
+# 死锁表现
 
 MySQL在进行alter table等DDL操作时，有时会出现Waiting for table metadata lock的等待场景。而且，一旦alter table TableA的操作停滞在Waiting for table metadata lock的状态，后续对TableA的任何操作（包括读）都无法进行，因为他们也会在Opening tables的阶段进入到Waiting for table metadata lock的锁等待队列。如果是产品环境的核心表出现了这样的锁等待队列，就会造成灾难性的后果。
 
@@ -1361,3 +1361,34 @@ If the server acquires metadata locks for a statement that is syntactically vali
  
 
 总之，alter table的语句是很危险的(其实他的危险其实是未提交事物或者长事务导致的)，在操作之前最好确认对要操作的表没有任何进行中的操作、没有未提交事务、也没有显式事务中的报错语句。如果有alter table的维护任务，在无人监管的时候运行，最好通过**lock_wait_timeout**设置好超时时间，避免长时间的metedata锁等待。
+
+
+
+# sleep 线程过多
+
+### 现状：
+
+睡眠连接过多，会对mysql服务器造成什么影响？
+严重消耗mysql服务器资源(主要是cpu, 内存)，并可能导致mysql崩溃。
+
+### 原因分析：
+
+造成睡眠连接过多的原因？
+
+1.　使用了太多持久连接(在高并发系统中，不适合使用持久连接)
+2.　程序中，没有及时关闭mysql连接
+3.　数据库查询不够优化，过度耗时。
+
+### 解决：
+
+那么，如果要从根本上解决sleep连接过多，就得从以上三点反复检查，但是见效并不快。
+mysql的配置文件中，有一项：
+wait_timeout, 即可设置睡眠连接超时秒数，如果某个连接超时，会被mysql自然终止，多好的办法！
+
+如在MySQL的my.ini中设置/执行语句（重启服务失效）：
+wait_timeout=100 #即设置mysql连接睡眠时间为100秒，任何sleep连接睡眠时间若超过100秒，将会被mysql服务自然终止。
+
+那么，对于正在运行中的生产服务器，在不能停止服务情况下，修改此项怎么办？很简单，以root用户登录到mysql,执行：
+
+set global interactive_timeout=30;
+set global wait_timeout=100；

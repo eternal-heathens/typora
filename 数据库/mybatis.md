@@ -73,9 +73,9 @@ MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结
 * https://blog.csdn.net/a1092882580/article/details/104086181
 * day01\_eesy\_04mybatis
 
-![image-20200720083531672](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5Cmybatis.assets%5Cimage-20200720083531672.png)
+![image-20200720083531672](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20200720083531672.png)
 
-![image-20200720083645169](F:%5CTypora%E6%95%B0%E6%8D%AE%E5%82%A8%E5%AD%98%5C%E6%95%B0%E6%8D%AE%E5%BA%93%5Cmybatis.assets%5Cimage-20200720083645169.png)
+![image-20200720083645169](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/image-20200720083645169.png)
 
 * **sqlsessionfactoryBuilder的作用是将xml的解析部分与factory的构造函数拿出来，便于xml解析器维护和使得factory别太臃肿**
 
@@ -173,7 +173,7 @@ MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结
 
     ```xml
     <?xml version="1.0" encoding="UTF-8" ?>
-
+    
     <!DOCTYPE configuration
             PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             "http://mybatis.org/dtd/mybatis-3-config.dtd">
@@ -206,7 +206,7 @@ MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结
         <mappers>
             <mapper resource="UserMapper.xml"/>
         </mappers>
-
+    
     </configuration>
     ```
 * resource：
@@ -1388,49 +1388,49 @@ public interface IUserDao {
 
     ```java
     package com.itheima.doamin;
-
+    
     import javax.jws.soap.SOAPBinding;
     import java.io.Serializable;
-
+    
     public class Account implements Serializable {
         private Integer id;
         private Integer uid;
         private Double money;
-
+    
         private User user;
-
+    
         public User getUser() {
             return user;
         }
-
+    
         public void setUser(User user) {
             this.user = user;
         }
-
+    
         public Integer getId() {
             return id;
         }
-
+    
         public void setId(Integer id) {
             this.id = id;
         }
-
+    
         public Integer getUid() {
             return uid;
         }
-
+    
         public void setUid(Integer uid) {
             this.uid = uid;
         }
-
+    
         public Double getMoney() {
             return money;
         }
-
+    
         public void setMoney(Double money) {
             this.money = money;
         }
-
+    
         @Override
         public String toString() {
             return "Account{" +
@@ -1444,68 +1444,68 @@ public interface IUserDao {
 
     ```java
     package com.itheima.doamin;
-
+    
     import java.io.Serializable;
     import java.util.Date;
     import java.util.List;
-
+    
     public class User implements Serializable {
         private Integer id;
         private String username;
         private String address;
         private String sex;
         private Date birthday;
-
+    
         private List<Account>  accounts;
-
+    
         public List<Account> getAccounts() {
             return accounts;
         }
-
+    
         public void setAccounts(List<Account> accounts) {
             this.accounts = accounts;
         }
-
+    
         public Integer getId() {
             return id;
         }
-
+    
         public String getUsername() {
             return username;
         }
-
+    
         public String getAddress() {
             return address;
         }
-
+    
         public String getSex() {
             return sex;
         }
-
+    
         public Date getBirthday() {
             return birthday;
         }
-
+    
         public void setId(Integer id) {
             this.id = id;
         }
-
+    
         public void setUsername(String username) {
             this.username = username;
         }
-
+    
         public void setAddress(String address) {
             this.address = address;
         }
-
+    
         public void setSex(String sex) {
             this.sex = sex;
         }
-
+    
         public void setBirthday(Date birthday) {
             this.birthday = birthday;
         }
-
+    
         @Override
         public String toString() {
             return "User{" +
@@ -1541,7 +1541,7 @@ public interface IUserDao {
         <select id="findAll" resultMap="AccountWithUserMap">
             SELECT * from account;
         </select>
-
+    
         <select id="selectUserById" parameterType="int" resultType="com.itheima.doamin.Account">
             SELECT * from account where uid =  #{uid};
         </select>
@@ -3249,7 +3249,7 @@ private void processPropertyPlaceHolders() {
     >         在该隔离级别，所有事务都可以看到其他未提交事务的执行结果。本隔离级别很少用于实际应用，因为它的性能也不比其他级别好多少。**读取未提交的数据，也被称之为脏读（Dirty Read）。**
     >     * \*\*Read Committed（读取提交内容）\*\*ISOLATION\_READ\_COMITTED
     >
-    >     ​ 这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的\*\*不可重复读（Nonrepeatable Read），如果一个用户在一个事务中多次读取一条数据，而另外一个用户则同时更新啦这条数据，造成第一个用户多次读取数据不一致。\*\*\*\*
+    >      这是大多数数据库系统的默认隔离级别（但不是MySQL默认的）。它满足了隔离的简单定义：一个事务只能看见已经提交事务所做的改变。这种隔离级别 也支持所谓的\*\*不可重复读（Nonrepeatable Read），如果一个用户在一个事务中多次读取一条数据，而另外一个用户则同时更新啦这条数据，造成第一个用户多次读取数据不一致。\*\*\*\*
     >
     >     * \*\*Repeatable Read（可重读）\*\*ISOLATION\_REPEATABLE\_READ
     >
@@ -3407,7 +3407,7 @@ private void processPropertyPlaceHolders() {
 
     ```
     public class SqlSessionFactoryBean implements FactoryBean<SqlSessionFactory>, InitializingBean, ApplicationListener<ApplicationEvent> {
-
+    
     protected SqlSessionFactory buildSqlSessionFactory() throws IOException {
         XMLConfigBuilder xmlConfigBuilder = null;
         Configuration configuration;
@@ -3426,7 +3426,7 @@ private void processPropertyPlaceHolders() {
     	···
     	参数检查
     	···
-
+    
     	//调用sqlSessionFactoryBuilder.build(configuration);生成sqlsqlSessionFactory，
         return this.sqlSessionFactoryBuilder.build(configuration);
     }

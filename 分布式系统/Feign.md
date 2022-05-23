@@ -178,18 +178,42 @@ public class RequestHeaderHystrixConcurrencyStrategy extends HystrixConcurrencyS
 
 
 
+feign相对于dubbo的优点在于Feign追求的是简洁，少侵入（因为就服务端而言，在SpringCloud环境下，不需要做任何额外的操作，而Dubbo的服务端需要配置开放的Dubbo接口，如果不是另一个应用feign提供的客户端的方式配置访问，直接服务端用@FeignClient就可以通过http工具访问了)。
 
+Dubbo方式更灵活。Dubbo是通过RPC调用实现的远程调用，支持多传输协议(Dubbo、Rmi、http、redis等等)，可以根据业务场景选择最佳的方式，非常灵活。默认的Dubbo协议：利用Netty，TCP传输，单一、异步、长连接，适合数据量小、高并发和服务提供者远远少于消费者的场景。Dubbo通过TCP长连接的方式进行通信，服务粒度是方法级的。
+
+从协议层选择看，Dubbo是配置化的，更加灵活。Dubbo协议更适合小数据高并发场景。
+
+**通信性能方面：**
+
+dubbo支持rest和自定制的tcp协议，可以做到更针对化的性能提高
+
+**服务治理方面：**
+
+dubbo在**负载均衡**、**容错机制**、并发控制、路由、流量调度、ABtest方面也都更完善，功能的性能也更强
+
+SpringCloud全家桶里面（Feign、Ribbon、Hystrix），特点是非常方便。Ribbon、Hystrix、Feign在服务治理中，配合Spring Cloud做微服务，使用上有很多优势，社区也比较活跃，看将来更新发展。
+
+业务发展影响着架构的选型，**当服务数量不是很大时，使用简洁的分布式RPC架构即可**，当服务数量增长到一定数据，需要进行服务治理时，就需要考虑使用流式计算架构。Dubbo可以方便的做更精细化的流量调度，服务结构治理的方案成熟，适合生产上使用，虽然Dubbo是尘封后重新开启，但这并不影响其技术价值。
+
+如果项目对性能要求不是很严格，可以选择使用Feign，它使用起来更方便。
+
+**如果需要提高性能，更完善的服务治理工具，避开基于Http方式的性能瓶颈，可以使用Dubbo。**
+
+但Dubbo Spring Cloud的出现，使得Dubbo既能够完全整合到Spring Cloud的技术栈中，享受Spring Cloud生态中的技术支持和标准化输出，又能够弥补Spring Cloud中服务治理这方面的短板。
 
 # Feign和RestTemplate的区别
 
-请求方式不一样
+**请求方式不一样**
 
 RestTemplate需要每个请求都拼接url+参数+类文件，灵活性高但是消息封装臃肿。
 
 feign可以伪装成类似SpringMVC的controller一样，将rest的请求进行隐藏，不用再自己拼接url和参数，可以便捷优雅地调用HTTP API。
 
-底层实现方式不一样
+**底层实现方式不一样**
 
 RestTemplate在拼接url的时候，可以直接指定ip地址+端口号，不需要经过服务注册中心就可以直接请求接口；也可以指定服务名，请求先到服务注册中心（如nacos）获取对应服务的ip地址+端口号，然后经过HTTP转发请求到对应的服务接口（注意：这时候的restTemplate需要添加@LoadBalanced注解，进行负载均衡）。
 
 Feign的底层实现是动态代理，如果对某个接口进行了@FeignClient注解的声明，Feign就会针对这个接口创建一个动态代理的对象，在调用这个接口的时候，其实就是调用这个接口的代理对象，代理对象根据@FeignClient注解中name的值在服务注册中心找到对应的服务，然后再根据@RequestMapping等其他注解的映射路径构造出请求的地址，针对这个地址，再从本地实现HTTP的远程调用。
+
+**但都是最后以http的方式请求服务端，只是Feign客户端对象提供了诸如序列化器和拦截器等拔插配置类的注入方式，方便统一处理**
