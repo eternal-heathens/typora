@@ -163,7 +163,7 @@ http://dubbo.apache.org/zh-cn/docs/user/demos/multi-versions.html 在服务提�
 
 **3、使用@Configuration的方式自己配置xml生成解析后的configuration类并注入容器中**
 
-​ 将每一个组件手动配置到容器中,让dubbo的@EnableDubbo的scanBasePackage指定dubbo的Configuration是哪个类，但是，仍需要用@Service【暴露服务】，使用@Reference【引用服务】，来保证服务注入容器
+ 将每一个组件手动配置到容器中,让dubbo的@EnableDubbo的scanBasePackage指定dubbo的Configuration是哪个类，但是，仍需要用@Service【暴露服务】，使用@Reference【引用服务】，来保证服务注入容器
 
 ## 高可用
 
@@ -314,3 +314,71 @@ Selector 一般称 为选择器 ，也可以翻译为 多路复用器， Connect
 ## zk与dubbo
 
 dubbo是将jar信息注册到zk的一个远程调用规则制定并借用netty通信的rpc框架，zk负责将服务信息进行记录以便dubbo拿取远程服务信息
+
+
+
+# 在Dubbo中开发REST风格的远程调用（RESTful Remoting）
+
+https://blog.csdn.net/hezemin0315/article/details/52749553
+
+### Protocol配置的局限性
+
+dubbo支持多种远程调用方式，但所有调用方式都是用`<dubbo:protocol/>`来配置的，例如：
+
+```
+<dubbo:protocol name="dubbo" port="9090" server="netty" client="netty" codec="dubbo" serialization="hessian2" 
+    charset="UTF-8" threadpool="fixed" threads="100" queues="0" iothreads="9" buffer="8192" accepts="1000" payload="8388608"/>
+```
+
+其实，上面很多属性实际上dubbo RPC远程调用方式特有的，很多dubbo中的其它远程调用方式根本就不支持例如server, client, codec, iothreads, accepts, payload等等（当然，有的是条件所限不支持，有的是根本没有必要支持）。这给用户的使用徒增很多困惑，用户也并不知道有些属性（比如做性能调优）添加了实际上是不起作用的。
+
+另一方面，各种远程调用方式往往有大量自己独特的配置需要，特别是我们逐步为每种远程调用方式都添加更丰富、更高级的功能，这就不可避免的扩展`<protocol/>`中的属性（例如目前我们在REST中已经添加了keepalive和extension两个属性），到最后会导致`<protocol/>`臃肿不堪，用户的使用也更加困惑。
+
+当然，dubbo中有一种扩展`<protocol/>`的方式是用`<dubbo:parameter/>`，但这种方式显然很有局限性，而且用法复杂，缺乏schema校验。
+
+所以，最好的方式是为每种远程调用方式设置自己的protocol元素，比如`<protocol-dubbo/>`，`<protocol-rest/>`等等，每种元素用XML schema规定自己的属性（当然属性在各种远程调用方式之间能通用是最好的）。
+
+如此一来，例如前面提到过的extension配置也可以用更自由的方式，从而更清楚更可扩展（以下只是举例，当然也许有更好的方式）:
+
+```xml
+<dubbo:protocol-rest port="8080">
+    <dubbo:extension>someInterceptor</dubbo:extension>
+    <dubbo:extension>someFilter</dubbo:extension>
+    <dubbo:extension>someDynamicFeature</dubbo:extension>
+    <dubbo:extension>someEntityProvider</dubbo:extension>
+</dubbo:protocol-rest>
+```
+
+### Dubbo REST中如何实现负载均衡和容错（failover）？
+
+如果dubbo REST的消费端也是dubbo的，则Dubbo REST和其他dubbo远程调用协议基本完全一样，由dubbo框架透明的在消费端做load balance、failover等等。
+
+如果dubbo REST的消费端是非dubbo的，甚至是非java的，则最好配置服务提供端的软负载均衡机制，目前可考虑用LVS、HAProxy、 Nginx等等对HTTP请求做负载均衡。
+
+性能基准测试
+
+| 远程调用方式               | 平均响应时间 | 平均TPS（每秒事务数） |
+| :------------------------- | :----------- | :-------------------- |
+| REST: Jetty + JSON         | 7.806        | 1280                  |
+| REST: Jetty + JSON + GZIP  | TODO         | TODO                  |
+| REST: Jetty + XML          | TODO         | TODO                  |
+| REST: Jetty + XML + GZIP   | TODO         | TODO                  |
+| REST: Tomcat + JSON        | 2.082        | 4796                  |
+| REST: Netty + JSON         | 2.182        | 4576                  |
+| Dubbo: FST                 | 1.211        | 8244                  |
+| Dubbo: kyro                | 1.182        | 8444                  |
+| Dubbo: dubbo serialization | 1.43         | 6982                  |
+| Dubbo: hessian2            | 1.49         | 6701                  |
+| Dubbo: fastjson            | 1.572        | 6352                  |
+
+![no image found](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/202206042228130.png)
+
+![no image found](https://raw.githubusercontent.com/eternal-heathens/picgoBeg/master/JavaImages/202206042229671.png)
+
+仅就目前的结果，一点简单总结：
+
+- dubbo RPC（特别是基于高效java序列化方式如kryo，fst）比REST的响应时间和吞吐量都有较显著优势，内网的dubbo系统之间优先选择dubbo RPC。
+- 在REST的实现选择上，仅就性能而言，目前tomcat7和netty最优（当然目前使用的jetty和netty版本都较低）。tjws和sun http server在性能测试中表现极差，平均响应时间超过200ms，平均tps只有50左右（为了避免影响图片效果，没在上面列出）。
+- 在REST中JSON数据格式性能优于XML（数据暂未在以上列出）。
+- 在REST中启用GZIP对企业内网中的小数据量复杂对象帮助不大，性能反而有下降（数据暂未在以上列出）。
+
