@@ -55,5 +55,7 @@ jdk
 
 
 
+# Bandicam班迪录屏（vip版）
 
+https://blog.csdn.net/fulinliuquanyu/article/details/123881028
 
