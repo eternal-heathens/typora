@@ -59,3 +59,8 @@ jdk
 
 https://blog.csdn.net/fulinliuquanyu/article/details/123881028
 
+
+
+
+
+[Windows 修改默认下载、安装路径_buckets的博客-CSDN博客_修改默认安装路径](https://blog.csdn.net/o524295087/article/details/123210856)
